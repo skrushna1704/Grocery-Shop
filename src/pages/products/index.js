@@ -337,7 +337,7 @@ export default function ProductsPage() {
                   {category 
                     ? `${category.charAt(0).toUpperCase() + category.slice(1)} Products`
                     : search 
-                    ? `Search Results for "${search}"`
+                    ? `Search Results for &quot;${search}&quot;`
                     : 'All Products'
                   }
                 </h1>
@@ -411,7 +411,7 @@ export default function ProductsPage() {
                     <span className="text-sm text-gray-600">Active filters:</span>
                     {activeFilters.search && (
                       <span className="inline-flex items-center px-2 py-1 bg-primary-100 text-primary-800 text-xs rounded-md">
-                        "{activeFilters.search}"
+                        &quot;{activeFilters.search}&quot;
                         <button
                           onClick={() => setActiveFilters(prev => ({ ...prev, search: '' }))}
                           className="ml-1 hover:text-primary-900"
@@ -498,7 +498,7 @@ export default function ProductsPage() {
                     No products found
                   </h3>
                   <p className="text-gray-600 mb-6">
-                    Try adjusting your filters or search terms to find what you're looking for.
+                    Try adjusting your filters or search terms to find what you&apos;re looking for.
                   </p>
                   <Button onClick={clearAllFilters}>
                     Clear all filters

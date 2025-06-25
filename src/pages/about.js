@@ -89,7 +89,7 @@ export default function AboutPage() {
                   <span className="block text-secondary-400">Delivered with Care</span>
                 </h1>
                 <p className="text-xl mb-8 text-primary-100">
-                  Since 2016, we've been Pimpri(Kalgaon)'s trusted grocery partner, 
+                  Since 2016, we&apos;ve been Pimpri(Kalgaon)&apos;s trusted grocery partner, 
                   delivering fresh, quality products right to your doorstep.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -164,7 +164,7 @@ export default function AboutPage() {
                 <p className="text-lg text-gray-600 leading-relaxed">
                   Founded in 2016 with a simple mission: to make fresh, quality groceries accessible 
                   to every family in Pimpri(Kalgaon). What started as a small local initiative has 
-                  grown into the region's most trusted grocery delivery service.
+                  grown into the region&apos;s most trusted grocery delivery service.
                 </p>
               </motion.div>
 
@@ -203,7 +203,7 @@ export default function AboutPage() {
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-3">Community-Centered Approach</h3>
                     <p className="text-gray-600">
-                      By partnering with local farmers and suppliers, we've built a sustainable ecosystem 
+                      By partnering with local farmers and suppliers, we&apos;ve built a sustainable ecosystem 
                       that benefits everyone - from producers to consumers.
                     </p>
                   </div>
@@ -211,8 +211,8 @@ export default function AboutPage() {
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-3">Technology Meets Tradition</h3>
                     <p className="text-gray-600">
-                      We've combined traditional market values with modern technology to create 
-                      an experience that's both convenient and personal.
+                      We&apos;ve combined traditional market values with modern technology to create 
+                      an experience that&apos;s both convenient and personal.
                     </p>
                   </div>
                 </motion.div>
@@ -325,7 +325,7 @@ export default function AboutPage() {
               >
                 <h2 className="text-3xl lg:text-4xl font-bold mb-6">Get in Touch</h2>
                 <p className="text-xl mb-8 text-primary-100">
-                  Have questions or want to know more? We're here to help!
+                  Have questions or want to know more? We&apos;re here to help!
                 </p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">

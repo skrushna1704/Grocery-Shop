@@ -139,8 +139,8 @@ export default function ContactPage() {
               Get in Touch
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Have a question, suggestion, or need help? We'd love to hear from you. 
-              Reach out and we'll get back to you as soon as possible.
+              Have a question, suggestion, or need help? We&apos;d love to hear from you. 
+              Reach out and we&apos;ll get back to you as soon as possible.
             </p>
           </motion.div>
 
@@ -193,7 +193,7 @@ export default function ContactPage() {
                     <Alert variant="success" className="mb-6" icon={true}>
                       <Alert.Title>Message Sent Successfully!</Alert.Title>
                       <Alert.Description>
-                        Thank you for contacting us. We'll get back to you within 24 hours.
+                        Thank you for contacting us. We&apos;ll get back to you within 24 hours.
                       </Alert.Description>
                     </Alert>
                   )}
@@ -309,7 +309,7 @@ export default function ContactPage() {
                       <p className="text-sm text-gray-600">We deliver from 9:00 AM to 9:00 PM, all days of the week.</p>
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-900 mb-1">What's your delivery area?</h4>
+                      <h4 className="font-medium text-gray-900 mb-1">What&apos;s your delivery area?</h4>
                       <p className="text-sm text-gray-600">We currently serve the entire Pimpri(Kalgaon) area.</p>
                     </div>
                     <div>

@@ -501,7 +501,7 @@ export default function Home() {
                   ))}
                 </div>
                 <blockquote className="text-lg text-gray-700 mb-6">
-                  "{testimonials[currentTestimonial].comment}"
+                  &quot;{testimonials[currentTestimonial].comment}&quot;
                 </blockquote>
                 <div className="flex items-center justify-center space-x-3">
                   <Image

@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 function Error({ statusCode }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -10,12 +12,12 @@ function Error({ statusCode }) {
             ? `An error ${statusCode} occurred on server`
             : 'An error occurred on client'}
         </p>
-        <a
+        <Link
           href="/"
           className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700"
         >
           Go back home
-        </a>
+        </Link>
       </div>
     </div>
   )

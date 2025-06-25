@@ -219,7 +219,7 @@ const SearchBar = ({ onClose, placeholder = "Search for fresh vegetables, fruits
             {/* No results */}
             {!loading && query && suggestions.length === 0 && (
               <div className="p-4 text-center">
-                <p className="text-sm text-gray-500">No products found for "{query}"</p>
+                <p className="text-sm text-gray-500">No products found for &quot;{query}&quot;</p>
                 <button
                   onClick={() => handleSearch(query)}
                   className="mt-2 text-sm text-primary-600 hover:text-primary-700"
