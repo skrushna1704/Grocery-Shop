@@ -1,0 +1,155 @@
+/* Layout component specific styles */
+
+.layout {
+    @apply min-h-screen flex flex-col bg-gray-50;
+  }
+  
+  .header {
+    @apply sticky top-0 z-40 bg-white shadow-sm;
+  }
+  
+  .main {
+    @apply flex-1;
+  }
+  
+  .footer {
+    @apply mt-auto;
+  }
+  
+  /* Loading bar */
+  .loadingBar {
+    @apply fixed top-0 left-0 w-full h-1 bg-primary-200 z-50;
+  }
+  
+  .loadingProgress {
+    @apply h-full bg-primary-500 transition-all duration-300 ease-out;
+  }
+  
+  /* Container variants */
+  .containerFluid {
+    @apply w-full px-4 sm:px-6 lg:px-8;
+  }
+  
+  .containerFixed {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .containerNarrow {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Page transitions */
+  .pageTransition {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  /* Floating elements */
+  .floatingCart {
+    @apply fixed bottom-6 right-6 z-40;
+    @apply bg-primary-500 text-white p-3 rounded-full shadow-lg;
+    @apply hover:bg-primary-600 transition-colors duration-200;
+  }
+  
+  .floatingCart.hidden {
+    display: none;
+  }
+  
+  .cartBadge {
+    @apply absolute -top-2 -right-2 bg-red-500 text-white;
+    @apply text-xs rounded-full h-5 w-5 flex items-center justify-center;
+    @apply font-medium;
+  }
+  
+  .backToTop {
+    @apply fixed bottom-6 left-6 bg-white text-gray-600;
+    @apply p-2 rounded-full shadow-lg hover:bg-gray-50;
+    @apply transition-colors duration-200 z-40;
+  }
+  
+  .backToTop.desktop {
+    display: none;
+  }
+  
+  @media (min-width: 1024px) {
+    .backToTop.desktop {
+      display: block;
+    }
+  }
+  
+  /* Sidebar overlay */
+  .sidebarOverlay {
+    @apply fixed inset-0 bg-black bg-opacity-50 z-50;
+    @apply transition-opacity duration-300;
+  }
+  
+  .sidebarOverlay.hidden {
+    @apply opacity-0 pointer-events-none;
+  }
+  
+  .sidebarOverlay.visible {
+    @apply opacity-100;
+  }
+  
+  /* Skip link for accessibility */
+  .skipLink {
+    @apply focus:absolute focus:top-4 focus:left-4;
+    @apply bg-primary-600 text-white px-4 py-2 rounded-md z-50;
+    @apply focus:outline-none focus:ring-2 focus:ring-white;
+  }
+  
+  .skipLinkHidden {
+    @apply sr-only;
+  }
+  
+  .skipLinkVisible {
+    @apply not-sr-only;
+  }
+  
+  /* Print styles */
+  @media print {
+    .noprint {
+      display: none;
+    }
+    
+    .layout {
+      @apply bg-white;
+    }
+    
+    .floatingCart,
+    .backToTop,
+    .sidebarOverlay {
+      display: none;
+    }
+  }
+  
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .pageTransition,
+    .loadingProgress,
+    .floatingCart,
+    .backToTop {
+      @apply transition-none;
+    }
+  }
+  
+  /* High contrast mode */
+  @media (prefers-contrast: high) {
+    .floatingCart {
+      @apply border-2 border-white;
+    }
+    
+    .backToTop {
+      @apply border-2 border-gray-800;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .layout {
+      @apply bg-gray-900;
+    }
+    
+    .backToTop {
+      @apply bg-gray-800 text-gray-300 hover:bg-gray-700;
+    }
+  }

@@ -1,0 +1,176 @@
+/* SearchBar component specific styles */
+
+.searchContainer {
+  @apply relative w-full;
+}
+
+.searchForm {
+  @apply relative;
+}
+
+.searchInput {
+  @apply w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg;
+  @apply focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+  @apply bg-white text-gray-900 placeholder-gray-500;
+  @apply transition-all duration-200;
+}
+
+.searchIcon {
+  @apply absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400;
+}
+
+.clearButton {
+  @apply absolute right-3 top-1/2 transform -translate-y-1/2;
+  @apply text-gray-400 hover:text-gray-600 transition-colors;
+}
+
+/* Dropdown styles */
+.dropdown {
+  @apply absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg;
+  @apply border border-gray-200 z-50 max-h-96 overflow-y-auto;
+}
+
+.dropdownSection {
+  @apply p-2;
+}
+
+.sectionTitle {
+  @apply px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide;
+}
+
+.suggestionItem {
+  @apply w-full flex items-center px-3 py-2 hover:bg-gray-50 rounded-md text-left;
+  @apply transition-colors duration-150;
+}
+
+.suggestionImage {
+  @apply w-10 h-10 bg-gray-200 rounded-md mr-3 flex-shrink-0 overflow-hidden;
+}
+
+.suggestionContent {
+  @apply flex-1 min-w-0;
+}
+
+.suggestionName {
+  @apply text-sm font-medium text-gray-900 truncate;
+}
+
+.suggestionCategory {
+  @apply text-xs text-gray-500;
+}
+
+.suggestionIcon {
+  @apply w-4 h-4 text-gray-400 flex-shrink-0;
+}
+
+/* Recent searches */
+.recentHeader {
+  @apply flex items-center justify-between px-3 py-2;
+}
+
+.clearAllButton {
+  @apply text-xs text-primary-600 hover:text-primary-700 transition-colors;
+}
+
+.recentItem {
+  @apply w-full flex items-center px-3 py-2 hover:bg-gray-50 rounded-md text-left;
+  @apply transition-colors duration-150;
+}
+
+.recentIcon {
+  @apply w-4 h-4 text-gray-400 mr-3 flex-shrink-0;
+}
+
+.recentText {
+  @apply text-sm text-gray-700 flex-1 truncate;
+}
+
+/* Trending searches */
+.trendingItem {
+  @apply w-full flex items-center px-3 py-2 hover:bg-gray-50 rounded-md text-left;
+  @apply transition-colors duration-150;
+}
+
+.trendingIcon {
+  @apply w-4 h-4 text-green-500 mr-3 flex-shrink-0;
+}
+
+/* Loading state */
+.loading {
+  @apply p-4 text-center;
+}
+
+.loadingSpinner {
+  @apply inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500;
+}
+
+.loadingText {
+  @apply mt-2 text-sm text-gray-500;
+}
+
+/* No results */
+.noResults {
+  @apply p-4 text-center;
+}
+
+.noResultsText {
+  @apply text-sm text-gray-500 mb-2;
+}
+
+.searchAnywayButton {
+  @apply text-sm text-primary-600 hover:text-primary-700 transition-colors;
+}
+
+/* Empty state */
+.emptyState {
+  @apply p-4 text-center;
+}
+
+.emptyIcon {
+  @apply w-8 h-8 text-gray-300 mx-auto mb-2;
+}
+
+.emptyText {
+  @apply text-sm text-gray-500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .searchInput {
+    @apply py-2 text-sm;
+  }
+  
+  .dropdown {
+    @apply max-h-64;
+  }
+  
+  .suggestionItem {
+    @apply px-2 py-2;
+  }
+  
+  .suggestionImage {
+    @apply w-8 h-8;
+  }
+}
+
+/* Focus styles */
+.searchInput:focus {
+  @apply outline-none ring-2 ring-primary-500 border-primary-500;
+}
+
+/* Animation for dropdown */
+.dropdownEnter {
+  @apply opacity-0 transform scale-95;
+}
+
+.dropdownEnterActive {
+  @apply opacity-100 transform scale-100 transition-all duration-200;
+}
+
+.dropdownExit {
+  @apply opacity-100 transform scale-100;
+}
+
+.dropdownExitActive {
+  @apply opacity-0 transform scale-95 transition-all duration-150;
+}

@@ -1,0 +1,241 @@
+/* Checkout Form Component Styles */
+.checkoutForm {
+  @apply max-w-4xl mx-auto;
+}
+
+.checkoutFormSection {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6;
+}
+
+.checkoutFormTitle {
+  @apply text-lg font-semibold text-gray-900 mb-4;
+}
+
+.checkoutFormSubtitle {
+  @apply text-sm text-gray-600 mb-6;
+}
+
+.checkoutFormStep {
+  @apply mb-8;
+}
+
+.checkoutFormStepHeader {
+  @apply flex items-center mb-4;
+}
+
+.checkoutFormStepNumber {
+  @apply w-8 h-8 rounded-full bg-primary-600 text-white flex items-center justify-center text-sm font-medium mr-3;
+}
+
+.checkoutFormStepTitle {
+  @apply text-lg font-medium text-gray-900;
+}
+
+.checkoutFormStepDescription {
+  @apply text-sm text-gray-600 ml-11;
+}
+
+.checkoutFormStepContent {
+  @apply ml-11;
+}
+
+.checkoutFormStepCompleted {
+  @apply bg-green-600;
+}
+
+.checkoutFormStepCurrent {
+  @apply bg-primary-600;
+}
+
+.checkoutFormStepPending {
+  @apply bg-gray-300;
+}
+
+.checkoutFormNavigation {
+  @apply flex justify-between items-center pt-6 border-t border-gray-200;
+}
+
+.checkoutFormButton {
+  @apply bg-primary-600 text-white py-3 px-6 rounded-md font-medium hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors;
+}
+
+.checkoutFormButtonSecondary {
+  @apply bg-gray-100 text-gray-700 py-3 px-6 rounded-md font-medium hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors;
+}
+
+.checkoutFormButtonDisabled {
+  @apply opacity-50 cursor-not-allowed hover:bg-primary-600;
+}
+
+.checkoutFormSummary {
+  @apply bg-gray-50 rounded-lg p-4 mb-6;
+}
+
+.checkoutFormSummaryTitle {
+  @apply text-sm font-medium text-gray-900 mb-3;
+}
+
+.checkoutFormSummaryItem {
+  @apply flex justify-between items-center text-sm mb-2;
+}
+
+.checkoutFormSummaryLabel {
+  @apply text-gray-600;
+}
+
+.checkoutFormSummaryValue {
+  @apply font-medium text-gray-900;
+}
+
+.checkoutFormError {
+  @apply bg-red-50 border border-red-200 rounded-md p-4 mb-6;
+}
+
+.checkoutFormErrorTitle {
+  @apply text-sm font-medium text-red-800 mb-2;
+}
+
+.checkoutFormErrorMessage {
+  @apply text-sm text-red-700;
+}
+
+.checkoutFormSuccess {
+  @apply bg-green-50 border border-green-200 rounded-md p-4 mb-6;
+}
+
+.checkoutFormSuccessTitle {
+  @apply text-sm font-medium text-green-800 mb-2;
+}
+
+.checkoutFormSuccessMessage {
+  @apply text-sm text-green-700;
+}
+
+.checkoutFormLoading {
+  @apply flex items-center justify-center py-8;
+}
+
+.checkoutFormLoadingText {
+  @apply text-sm text-gray-600 ml-2;
+}
+
+/* Dark mode styles */
+.dark .checkoutFormSection {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .checkoutFormTitle {
+  @apply text-white;
+}
+
+.dark .checkoutFormSubtitle {
+  @apply text-gray-400;
+}
+
+.dark .checkoutFormStepTitle {
+  @apply text-white;
+}
+
+.dark .checkoutFormStepDescription {
+  @apply text-gray-400;
+}
+
+.dark .checkoutFormStepPending {
+  @apply bg-gray-600;
+}
+
+.dark .checkoutFormNavigation {
+  @apply border-gray-600;
+}
+
+.dark .checkoutFormButtonSecondary {
+  @apply bg-gray-700 text-gray-200 hover:bg-gray-600;
+}
+
+.dark .checkoutFormSummary {
+  @apply bg-gray-700;
+}
+
+.dark .checkoutFormSummaryTitle {
+  @apply text-white;
+}
+
+.dark .checkoutFormSummaryLabel {
+  @apply text-gray-400;
+}
+
+.dark .checkoutFormSummaryValue {
+  @apply text-gray-200;
+}
+
+.dark .checkoutFormError {
+  @apply bg-red-900/20 border-red-700;
+}
+
+.dark .checkoutFormErrorTitle {
+  @apply text-red-200;
+}
+
+.dark .checkoutFormErrorMessage {
+  @apply text-red-300;
+}
+
+.dark .checkoutFormSuccess {
+  @apply bg-green-900/20 border-green-700;
+}
+
+.dark .checkoutFormSuccessTitle {
+  @apply text-green-200;
+}
+
+.dark .checkoutFormSuccessMessage {
+  @apply text-green-300;
+}
+
+.dark .checkoutFormLoadingText {
+  @apply text-gray-400;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .checkoutFormSection {
+    @apply p-4;
+  }
+  
+  .checkoutFormStepContent {
+    @apply ml-0;
+  }
+  
+  .checkoutFormStepDescription {
+    @apply ml-0 mt-2;
+  }
+  
+  .checkoutFormNavigation {
+    @apply flex-col space-y-3;
+  }
+  
+  .checkoutFormButton {
+    @apply w-full;
+  }
+  
+  .checkoutFormButtonSecondary {
+    @apply w-full;
+  }
+}
+
+/* Animation */
+.checkoutFormEnter {
+  @apply opacity-0 transform translate-y-4;
+}
+
+.checkoutFormEnterActive {
+  @apply opacity-100 transform translate-y-0 transition-all duration-200;
+}
+
+.checkoutFormExit {
+  @apply opacity-100 transform translate-y-0;
+}
+
+.checkoutFormExitActive {
+  @apply opacity-0 transform translate-y-4 transition-all duration-200;
+} 

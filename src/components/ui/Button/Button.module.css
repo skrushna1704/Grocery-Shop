@@ -1,0 +1,121 @@
+/* Button component specific styles */
+
+.button {
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-all duration-200;
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+    @apply disabled:opacity-50 disabled:pointer-events-none;
+  }
+  
+  /* Variant styles */
+  .primary {
+    @apply bg-primary-500 text-white shadow-sm;
+    @apply hover:bg-primary-600 focus-visible:ring-primary-500;
+    @apply active:bg-primary-700;
+  }
+  
+  .secondary {
+    @apply bg-secondary-500 text-white shadow-sm;
+    @apply hover:bg-secondary-600 focus-visible:ring-secondary-500;
+    @apply active:bg-secondary-700;
+  }
+  
+  .outline {
+    @apply border border-gray-300 bg-white text-gray-700 shadow-sm;
+    @apply hover:bg-gray-50 focus-visible:ring-gray-500;
+    @apply active:bg-gray-100;
+  }
+  
+  .ghost {
+    @apply text-gray-700 shadow-none;
+    @apply hover:bg-gray-100 focus-visible:ring-gray-500;
+    @apply active:bg-gray-200;
+  }
+  
+  .link {
+    @apply text-primary-600 shadow-none p-0 h-auto;
+    @apply hover:text-primary-700 hover:underline;
+    @apply focus-visible:ring-primary-500;
+  }
+  
+  .danger {
+    @apply bg-red-600 text-white shadow-sm;
+    @apply hover:bg-red-700 focus-visible:ring-red-500;
+    @apply active:bg-red-800;
+  }
+  
+  .success {
+    @apply bg-green-600 text-white shadow-sm;
+    @apply hover:bg-green-700 focus-visible:ring-green-500;
+    @apply active:bg-green-800;
+  }
+  
+  /* Size styles */
+  .xs {
+    @apply h-6 px-2 text-xs;
+  }
+  
+  .sm {
+    @apply h-8 px-3 text-xs;
+  }
+  
+  .md {
+    @apply h-10 px-4 py-2 text-sm;
+  }
+  
+  .lg {
+    @apply h-12 px-6 text-base;
+  }
+  
+  .xl {
+    @apply h-14 px-8 text-lg;
+  }
+  
+  /* Loading state */
+  .loading {
+    @apply cursor-wait;
+  }
+  
+  .loading .content {
+    @apply opacity-70;
+  }
+  
+  /* Icon styles */
+  .iconOnly {
+    @apply aspect-square p-0;
+  }
+  
+  .withLeftIcon {
+    @apply pl-3;
+  }
+  
+  .withRightIcon {
+    @apply pr-3;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .responsiveText {
+      @apply text-xs;
+    }
+    
+    .lg.responsiveText {
+      @apply text-sm;
+    }
+    
+    .xl.responsiveText {
+      @apply text-base;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .outline {
+      @apply border-gray-600 bg-gray-800 text-gray-200;
+      @apply hover:bg-gray-700;
+    }
+    
+    .ghost {
+      @apply text-gray-200;
+      @apply hover:bg-gray-700;
+    }
+  }

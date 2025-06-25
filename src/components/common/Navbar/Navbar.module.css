@@ -1,0 +1,138 @@
+/* Navbar Component Styles */
+.navbar {
+  @apply bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40;
+}
+
+.navbarContainer {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.navbarContent {
+  @apply flex items-center justify-between h-16;
+}
+
+.navbarBrand {
+  @apply flex items-center space-x-2;
+}
+
+.navbarLogo {
+  @apply h-8 w-auto;
+}
+
+.navbarTitle {
+  @apply text-xl font-bold text-gray-900;
+}
+
+.navbarNav {
+  @apply hidden md:flex items-center space-x-8;
+}
+
+.navbarLink {
+  @apply text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors;
+}
+
+.navbarLinkActive {
+  @apply text-primary-600 bg-primary-50;
+}
+
+.navbarActions {
+  @apply flex items-center space-x-4;
+}
+
+.navbarMobileButton {
+  @apply md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500;
+}
+
+.navbarMobileMenu {
+  @apply md:hidden;
+}
+
+.navbarMobileMenuOpen {
+  @apply block;
+}
+
+.navbarMobileMenuClosed {
+  @apply hidden;
+}
+
+.navbarMobileNav {
+  @apply px-2 pt-2 pb-3 space-y-1 sm:px-3;
+}
+
+.navbarMobileLink {
+  @apply text-gray-600 hover:text-gray-900 hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-medium transition-colors;
+}
+
+.navbarMobileLinkActive {
+  @apply text-primary-600 bg-primary-50;
+}
+
+.navbarDivider {
+  @apply border-t border-gray-200 pt-4 pb-3;
+}
+
+.navbarUserSection {
+  @apply px-2 pt-2 pb-3 space-y-1;
+}
+
+.navbarUserInfo {
+  @apply px-3 py-2 text-sm text-gray-700;
+}
+
+.navbarUserActions {
+  @apply px-2 pt-2 pb-3 space-y-1;
+}
+
+/* Dark mode styles */
+.dark .navbar {
+  @apply bg-gray-900 border-gray-700;
+}
+
+.dark .navbarTitle {
+  @apply text-white;
+}
+
+.dark .navbarLink {
+  @apply text-gray-300 hover:text-white;
+}
+
+.dark .navbarLinkActive {
+  @apply text-primary-400 bg-primary-900/20;
+}
+
+.dark .navbarMobileButton {
+  @apply text-gray-400 hover:text-gray-300 hover:bg-gray-800;
+}
+
+.dark .navbarMobileLink {
+  @apply text-gray-300 hover:text-white hover:bg-gray-800;
+}
+
+.dark .navbarMobileLinkActive {
+  @apply text-primary-400 bg-primary-900/20;
+}
+
+.dark .navbarDivider {
+  @apply border-gray-700;
+}
+
+.dark .navbarUserInfo {
+  @apply text-gray-300;
+}
+
+/* Animation */
+.navbarMobileEnter {
+  @apply opacity-0 transform -translate-y-2;
+}
+
+.navbarMobileEnterActive {
+  @apply opacity-100 transform translate-y-0 transition-all duration-200;
+}
+
+.navbarMobileExit {
+  @apply opacity-100 transform translate-y-0;
+}
+
+.navbarMobileExitActive {
+  @apply opacity-0 transform -translate-y-2 transition-all duration-200;
+} 

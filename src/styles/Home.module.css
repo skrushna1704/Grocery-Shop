@@ -1,0 +1,526 @@
+/* Home page styles */
+
+/* Hero section */
+.hero {
+    @apply relative bg-gradient-to-r from-primary-600 to-primary-700 text-white overflow-hidden;
+  }
+  
+  .heroContent {
+    @apply container mx-auto px-4 py-16 lg:py-24;
+  }
+  
+  .heroGrid {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-8 items-center;
+  }
+  
+  .heroText {
+    @apply space-y-6;
+  }
+  
+  .heroTitle {
+    @apply text-4xl lg:text-6xl font-bold leading-tight;
+  }
+  
+  .heroSubtitle {
+    @apply text-xl lg:text-2xl text-primary-100;
+  }
+  
+  .heroDescription {
+    @apply text-lg text-primary-200 max-w-lg;
+  }
+  
+  .heroButtons {
+    @apply flex flex-col sm:flex-row gap-4;
+  }
+  
+  .heroImage {
+    @apply relative lg:order-2;
+  }
+  
+  .heroImageContainer {
+    @apply relative w-full h-64 lg:h-96 rounded-lg overflow-hidden;
+  }
+  
+  .heroImageImg {
+    @apply w-full h-full object-cover;
+  }
+  
+  /* Categories section */
+  .categories {
+    @apply py-16 bg-gray-50;
+  }
+  
+  .categoriesContainer {
+    @apply container mx-auto px-4;
+  }
+  
+  .categoriesHeader {
+    @apply text-center mb-12;
+  }
+  
+  .categoriesTitle {
+    @apply text-3xl lg:text-4xl font-bold text-gray-900 mb-4;
+  }
+  
+  .categoriesSubtitle {
+    @apply text-lg text-gray-600 max-w-2xl mx-auto;
+  }
+  
+  .categoriesGrid {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6;
+  }
+  
+  .categoryCard {
+    @apply relative bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden;
+  }
+  
+  .categoryCardGroup {
+    /* 'group' class should be added in JSX */
+  }
+  
+  .categoryCard:hover {
+    @apply transform -translate-y-1 transition-transform duration-200;
+  }
+  
+  .categoryImage {
+    @apply relative aspect-square overflow-hidden;
+  }
+  
+  .categoryImageImg {
+    @apply w-full h-full object-cover group-hover:scale-105 transition-transform duration-300;
+  }
+  
+  .categoryOverlay {
+    @apply absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-30 transition-colors duration-200;
+  }
+  
+  .categoryContent {
+    @apply absolute inset-0 flex items-center justify-center;
+  }
+  
+  .categoryName {
+    @apply text-white font-semibold text-center px-4;
+  }
+  
+  /* Featured products section */
+  .featuredProducts {
+    @apply py-16;
+  }
+  
+  .featuredProductsContainer {
+    @apply container mx-auto px-4;
+  }
+  
+  .featuredProductsHeader {
+    @apply text-center mb-12;
+  }
+  
+  .featuredProductsTitle {
+    @apply text-3xl lg:text-4xl font-bold text-gray-900 mb-4;
+  }
+  
+  .featuredProductsSubtitle {
+    @apply text-lg text-gray-600 max-w-2xl mx-auto;
+  }
+  
+  .featuredProductsGrid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6;
+  }
+  
+  /* Features section */
+  .features {
+    @apply py-16 bg-gray-50;
+  }
+  
+  .featuresContainer {
+    @apply container mx-auto px-4;
+  }
+  
+  .featuresHeader {
+    @apply text-center mb-12;
+  }
+  
+  .featuresTitle {
+    @apply text-3xl lg:text-4xl font-bold text-gray-900 mb-4;
+  }
+  
+  .featuresSubtitle {
+    @apply text-lg text-gray-600 max-w-2xl mx-auto;
+  }
+  
+  .featuresGrid {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-8;
+  }
+  
+  .featureCard {
+    @apply text-center;
+  }
+  
+  .featureIcon {
+    @apply w-16 h-16 bg-primary-500 rounded-full flex items-center justify-center mx-auto mb-6;
+  }
+  
+  .featureIconSvg {
+    @apply w-8 h-8 text-white;
+  }
+  
+  .featureTitle {
+    @apply text-xl font-semibold text-gray-900 mb-3;
+  }
+  
+  .featureDescription {
+    @apply text-gray-600;
+  }
+  
+  /* Testimonials section */
+  .testimonials {
+    @apply py-16;
+  }
+  
+  .testimonialsContainer {
+    @apply container mx-auto px-4;
+  }
+  
+  .testimonialsHeader {
+    @apply text-center mb-12;
+  }
+  
+  .testimonialsTitle {
+    @apply text-3xl lg:text-4xl font-bold text-gray-900 mb-4;
+  }
+  
+  .testimonialsSubtitle {
+    @apply text-lg text-gray-600 max-w-2xl mx-auto;
+  }
+  
+  .testimonialsContent {
+    @apply relative max-w-4xl mx-auto;
+  }
+  
+  .testimonialCard {
+    @apply bg-white rounded-lg shadow-lg p-8 text-center;
+  }
+  
+  .testimonialQuote {
+    @apply text-lg text-gray-700 mb-6 italic;
+  }
+  
+  .testimonialAuthor {
+    @apply flex items-center justify-center space-x-4;
+  }
+  
+  .testimonialAvatar {
+    @apply w-12 h-12 rounded-full overflow-hidden;
+  }
+  
+  .testimonialAvatarImg {
+    @apply w-full h-full object-cover;
+  }
+  
+  .testimonialInfo {
+    @apply text-left;
+  }
+  
+  .testimonialName {
+    @apply font-semibold text-gray-900;
+  }
+  
+  .testimonialLocation {
+    @apply text-sm text-gray-600;
+  }
+  
+  .testimonialRating {
+    @apply flex items-center space-x-1 mt-1;
+  }
+  
+  .testimonialStar {
+    @apply w-4 h-4 text-yellow-400 fill-current;
+  }
+  
+  /* Testimonial navigation */
+  .testimonialNav {
+    @apply flex items-center justify-center space-x-4 mt-8;
+  }
+  
+  .testimonialButton {
+    @apply w-10 h-10 bg-white border border-gray-300 rounded-full flex items-center justify-center text-gray-600 hover:text-gray-900 hover:border-gray-400 transition-colors;
+  }
+  
+  .testimonialButton:focus {
+    @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+  }
+  
+  .testimonialDots {
+    @apply flex space-x-2;
+  }
+  
+  .testimonialDot {
+    @apply w-3 h-3 rounded-full bg-gray-300 transition-colors;
+  }
+  
+  .testimonialDotActive {
+    @apply bg-primary-500;
+  }
+  
+  /* CTA section */
+  .cta {
+    @apply py-16 bg-primary-600 text-white;
+  }
+  
+  .ctaContainer {
+    @apply container mx-auto px-4 text-center;
+  }
+  
+  .ctaTitle {
+    @apply text-3xl lg:text-4xl font-bold mb-4;
+  }
+  
+  .ctaDescription {
+    @apply text-xl text-primary-100 mb-8 max-w-2xl mx-auto;
+  }
+  
+  .ctaButtons {
+    @apply flex flex-col sm:flex-row gap-4 justify-center;
+  }
+  
+  /* Newsletter section */
+  .newsletter {
+    @apply py-16 bg-gray-50;
+  }
+  
+  .newsletterContainer {
+    @apply container mx-auto px-4 text-center;
+  }
+  
+  .newsletterTitle {
+    @apply text-3xl font-bold text-gray-900 mb-4;
+  }
+  
+  .newsletterDescription {
+    @apply text-lg text-gray-600 mb-8 max-w-2xl mx-auto;
+  }
+  
+  .newsletterForm {
+    @apply flex flex-col sm:flex-row gap-4 max-w-md mx-auto;
+  }
+  
+  .newsletterInput {
+    @apply flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
+  }
+  
+  .newsletterButton {
+    @apply px-8 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors font-medium;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .heroTitle {
+      @apply text-3xl;
+    }
+    
+    .heroSubtitle {
+      @apply text-lg;
+    }
+    
+    .categoriesGrid {
+      @apply grid-cols-2 gap-4;
+    }
+    
+    .featuredProductsGrid {
+      @apply grid-cols-1 sm:grid-cols-2;
+    }
+    
+    .featuresGrid {
+      @apply grid-cols-1;
+    }
+    
+    .testimonialCard {
+      @apply p-6;
+    }
+    
+    .newsletterForm {
+      @apply flex-col;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .heroContent {
+      @apply py-12;
+    }
+    
+    .heroButtons {
+      @apply flex-col;
+    }
+    
+    .categoriesGrid {
+      @apply grid-cols-2 gap-3;
+    }
+    
+    .featuredProductsGrid {
+      @apply grid-cols-1;
+    }
+    
+    .ctaButtons {
+      @apply flex-col;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .categoryCard:hover {
+      @apply border-2 border-primary-600;
+    }
+    
+    .testimonialButton:hover {
+      @apply bg-gray-200;
+    }
+  }
+  
+  /* Dark mode support */
+  @media (prefers-color-scheme: dark) {
+    .categories {
+      @apply bg-gray-800;
+    }
+    
+    .categoriesTitle {
+      @apply text-gray-100;
+    }
+    
+    .categoriesSubtitle {
+      @apply text-gray-400;
+    }
+    
+    .categoryCard {
+      @apply bg-gray-700;
+    }
+    
+    .featuredProductsTitle {
+      @apply text-gray-100;
+    }
+    
+    .featuredProductsSubtitle {
+      @apply text-gray-400;
+    }
+    
+    .features {
+      @apply bg-gray-800;
+    }
+    
+    .featuresTitle {
+      @apply text-gray-100;
+    }
+    
+    .featuresSubtitle {
+      @apply text-gray-400;
+    }
+    
+    .featureTitle {
+      @apply text-gray-100;
+    }
+    
+    .featureDescription {
+      @apply text-gray-400;
+    }
+    
+    .testimonialsTitle {
+      @apply text-gray-100;
+    }
+    
+    .testimonialsSubtitle {
+      @apply text-gray-400;
+    }
+    
+    .testimonialCard {
+      @apply bg-gray-700;
+    }
+    
+    .testimonialQuote {
+      @apply text-gray-300;
+    }
+    
+    .testimonialName {
+      @apply text-gray-100;
+    }
+    
+    .testimonialLocation {
+      @apply text-gray-400;
+    }
+    
+    .newsletter {
+      @apply bg-gray-800;
+    }
+    
+    .newsletterTitle {
+      @apply text-gray-100;
+    }
+    
+    .newsletterDescription {
+      @apply text-gray-400;
+    }
+    
+    .newsletterInput {
+      @apply bg-gray-700 border-gray-600 text-white placeholder-gray-400;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .categoryCard:hover,
+    .categoryImageImg {
+      @apply transition-none transform-none;
+    }
+    
+    .heroButtons,
+    .ctaButtons,
+    .newsletterButton {
+      @apply transition-none;
+    }
+  }
+  
+  /* Animation classes */
+  .heroEnter {
+    @apply opacity-100 transform translate-y-0;
+  }
+  
+  .heroExit {
+    @apply opacity-0 transform translate-y-4;
+  }
+  
+  .categoryEnter {
+    @apply opacity-100 transform scale-100;
+  }
+  
+  .categoryExit {
+    @apply opacity-0 transform scale-95;
+  }
+  
+  /* Loading states */
+  .heroLoading {
+    @apply animate-pulse;
+  }
+  
+  .categoriesLoading {
+    @apply animate-pulse;
+  }
+  
+  .featuredProductsLoading {
+    @apply animate-pulse;
+  }
+  
+  /* Print styles */
+  @media print {
+    .hero {
+      @apply bg-white text-black;
+    }
+    
+    .heroButtons,
+    .ctaButtons,
+    .newsletterForm {
+      @apply hidden;
+    }
+    
+    .categoryCard:hover {
+      @apply transform-none shadow-none;
+    }
+  }
+  

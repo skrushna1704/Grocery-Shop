@@ -1,0 +1,229 @@
+/* Modal component styles */
+
+/* Modal overlay */
+.modalOverlay {
+  @apply fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center z-50;
+}
+
+/* Modal container */
+.modalContainer {
+  @apply bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto relative;
+}
+
+/* Modal content */
+.modalContent {
+  @apply p-6;
+}
+
+/* Close button */
+.closeButton {
+  @apply absolute top-2 right-2 bg-none border-none text-2xl cursor-pointer text-gray-500 hover:text-gray-700 transition-colors;
+}
+
+.closeButton:focus {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2 rounded;
+}
+
+/* Modal header */
+.modalHeader {
+  @apply mb-4;
+}
+
+.modalTitle {
+  @apply text-lg font-semibold text-gray-900;
+}
+
+.modalSubtitle {
+  @apply text-sm text-gray-600 mt-1;
+}
+
+/* Modal body */
+.modalBody {
+  @apply mb-6;
+}
+
+/* Modal footer */
+.modalFooter {
+  @apply flex items-center justify-end space-x-3 pt-4 border-t border-gray-200;
+}
+
+/* Modal sizes */
+.modalSmall {
+  @apply max-w-sm;
+}
+
+.modalMedium {
+  @apply max-w-md;
+}
+
+.modalLarge {
+  @apply max-w-lg;
+}
+
+.modalExtraLarge {
+  @apply max-w-2xl;
+}
+
+.modalFull {
+  @apply max-w-full mx-4;
+}
+
+/* Modal variants */
+.modalCentered {
+  @apply flex items-center justify-center;
+}
+
+.modalTop {
+  @apply items-start pt-8;
+}
+
+.modalBottom {
+  @apply items-end pb-8;
+}
+
+/* Animation classes */
+.modalEnter {
+  @apply opacity-100 scale-100;
+}
+
+.modalExit {
+  @apply opacity-0 scale-95;
+}
+
+.overlayEnter {
+  @apply opacity-100;
+}
+
+.overlayExit {
+  @apply opacity-0;
+}
+
+/* Loading state */
+.modalLoading {
+  @apply opacity-75 pointer-events-none;
+}
+
+.loadingSpinner {
+  @apply inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-primary-500;
+}
+
+/* Error state */
+.modalError {
+  @apply border-red-300;
+}
+
+.errorMessage {
+  @apply text-sm text-red-600 mt-2;
+}
+
+/* Success state */
+.modalSuccess {
+  @apply border-green-300;
+}
+
+.successMessage {
+  @apply text-sm text-green-600 mt-2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .modalContainer {
+    @apply mx-4 max-h-[95vh];
+  }
+  
+  .modalContent {
+    @apply p-4;
+  }
+  
+  .modalFooter {
+    @apply flex-col space-y-3 space-x-0;
+  }
+  
+  .modalFooter > * {
+    @apply w-full;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .modalContainer {
+    @apply border-2 border-gray-800;
+  }
+  
+  .closeButton:hover {
+    @apply bg-gray-200;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .modalContainer {
+    @apply bg-gray-800;
+  }
+  
+  .modalTitle {
+    @apply text-gray-100;
+  }
+  
+  .modalSubtitle {
+    @apply text-gray-400;
+  }
+  
+  .modalFooter {
+    @apply border-gray-700;
+  }
+  
+  .closeButton {
+    @apply text-gray-400 hover:text-gray-200;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .modalContainer,
+  .closeButton {
+    @apply transition-none;
+  }
+}
+
+/* Focus trap styles */
+.modalFocusTrap {
+  @apply outline-none;
+}
+
+/* Backdrop blur */
+.modalBackdropBlur {
+  @apply backdrop-blur-sm;
+}
+
+/* Custom scrollbar for modal content */
+.modalContainer::-webkit-scrollbar {
+  @apply w-2;
+}
+
+.modalContainer::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded-r;
+}
+
+.modalContainer::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded;
+}
+
+.modalContainer::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Print styles */
+@media print {
+  .modalOverlay {
+    @apply static bg-transparent;
+  }
+  
+  .modalContainer {
+    @apply shadow-none border border-gray-300;
+  }
+  
+  .closeButton {
+    @apply hidden;
+  }
+} 
