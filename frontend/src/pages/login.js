@@ -6,9 +6,6 @@ import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff, Mail, Lock, AlertCircle, ShoppingBag, Sparkles, Users, Shield } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
-import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
-import Card from '@/components/ui/Card';
 import Image from 'next/image';
 
 export default function LoginPage() {
@@ -107,20 +104,6 @@ export default function LoginPage() {
       ...prev,
       [name]: value
     }));
-  };
-
-  // Demo credentials for testing
-  const demoCredentials = [
-    { email: 'customer@example.com', password: 'password123', role: 'Customer' },
-    { email: 'vendor@example.com', password: 'password123', role: 'Vendor' },
-    { email: 'admin@example.com', password: 'password123', role: 'Admin' }
-  ];
-
-  const fillDemoCredentials = (demo) => {
-    setFormData({
-      email: demo.email,
-      password: demo.password
-    });
   };
 
   if (loading) {
@@ -255,29 +238,6 @@ export default function LoginPage() {
                       </div>
                     </motion.div>
                   )}
-
-                  {/* Demo Credentials */}
-                  <div className="mb-6 p-5 bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-2xl">
-                    <div className="flex items-center mb-3">
-                      <Shield className="w-5 h-5 text-blue-600 mr-2" />
-                      <h3 className="text-sm font-semibold text-blue-800">
-                        Demo Accounts (For Testing)
-                      </h3>
-                    </div>
-                    <div className="space-y-2">
-                      {demoCredentials.map((demo, index) => (
-                        <motion.button
-                          key={index}
-                          onClick={() => fillDemoCredentials(demo)}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="block w-full text-left text-sm text-blue-700 hover:text-blue-900 hover:bg-blue-100 p-3 rounded-xl transition-all duration-200 border border-transparent hover:border-blue-200"
-                        >
-                          <span className="font-semibold">{demo.role}:</span> {demo.email}
-                        </motion.button>
-                      ))}
-                    </div>
-                  </div>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Email Field */}

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { AuthProvider } from '@/context/AuthContext';
+import { AuthProvider, useAuth } from '@/context/AuthContext';
 import { CartProvider } from '@/context/CartContext';
 import Layout from '@/components/common/Layout';
 import { storage } from '@/utils/storage';
@@ -12,6 +12,40 @@ const trackPageView = (url) => {
   // Add your analytics tracking here
   // For example: gtag('config', 'GA_TRACKING_ID', { page_path: url });
   console.log('Page view:', url);
+};
+
+// Role-based routing component
+const RoleBasedRouting = ({ children }) => {
+  const router = useRouter();
+  const { user, isAuthenticated, loading } = useAuth();
+
+  useEffect(() => {
+    // Skip routing logic if still loading or not authenticated
+    if (loading || !isAuthenticated) return;
+
+    const currentPath = router.pathname;
+    
+    // If user is admin/shopkeeper and on customer pages, redirect to shopkeeper dashboard
+    if (user?.role === 'admin' && currentPath === '/') {
+      router.replace('/shopkeeper/dashboard');
+      return;
+    }
+
+    // If user is customer and on shopkeeper pages, redirect to customer home
+    if (user?.role === 'user' && currentPath.startsWith('/shopkeeper')) {
+      router.replace('/');
+      return;
+    }
+
+    // If user is admin and on login/register pages, redirect to shopkeeper dashboard
+    if (user?.role === 'admin' && (currentPath === '/login' || currentPath === '/register')) {
+      router.replace('/shopkeeper/dashboard');
+      return;
+    }
+
+  }, [user, isAuthenticated, loading, router]);
+
+  return children;
 };
 
 function MyApp({ Component, pageProps }) {
@@ -95,11 +129,13 @@ function MyApp({ Component, pageProps }) {
       {/* Context Providers */}
       <AuthProvider>
         <CartProvider>
-          {useCustomLayout ? (
-            <Component key={componentKey} {...pageProps} />
-          ) : (
-            getLayout(<Component key={componentKey} {...pageProps} />)
-          )}
+          <RoleBasedRouting>
+            {useCustomLayout ? (
+              <Component key={componentKey} {...pageProps} />
+            ) : (
+              getLayout(<Component key={componentKey} {...pageProps} />)
+            )}
+          </RoleBasedRouting>
         </CartProvider>
       </AuthProvider>
     </>

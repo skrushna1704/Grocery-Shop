@@ -1,5 +1,6 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
 import { storage } from '@/utils/storage';
+import api from '@/utils/api';
 
 // Auth state
 const initialState = {
@@ -61,13 +62,29 @@ export const AuthProvider = ({ children }) => {
 
   // Check if user is logged in on app start
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
       try {
         const token = storage.getToken();
         const user = storage.getUser();
         
         if (token && user) {
-          dispatch({ type: 'AUTH_SUCCESS', payload: user });
+          // Verify token with backend
+          try {
+            const response = await api.get('/auth/me');
+            if (response.data.success) {
+              dispatch({ type: 'AUTH_SUCCESS', payload: response.data.data.user });
+            } else {
+              // Token is invalid, clear storage
+              storage.removeToken();
+              storage.removeUser();
+              dispatch({ type: 'AUTH_ERROR', payload: null });
+            }
+          } catch (error) {
+            // Token verification failed, clear storage
+            storage.removeToken();
+            storage.removeUser();
+            dispatch({ type: 'AUTH_ERROR', payload: null });
+          }
         } else {
           dispatch({ type: 'AUTH_ERROR', payload: null });
         }
@@ -84,28 +101,21 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'AUTH_START' });
     
     try {
-      // Simulate API call - replace with actual API call
-      const mockUser = {
-        id: '1',
-        firstName: 'John',
-        lastName: 'Doe',
-        email: credentials.email,
-        phone: '+91 9359881657',
-        role: 'customer',
-        addresses: [],
-        preferences: {},
-        createdAt: new Date(),
-        lastLogin: new Date()
-      };
+      const response = await api.post('/auth/login', credentials);
+      
+      if (response.data.success) {
+        const { user, token } = response.data.data;
+        
+        // Store in localStorage
+        storage.setToken(token);
+        storage.setUser(user);
 
-      const mockToken = 'mock-jwt-token-' + Date.now();
-
-      // Store in localStorage
-      storage.setToken(mockToken);
-      storage.setUser(mockUser);
-
-      dispatch({ type: 'AUTH_SUCCESS', payload: mockUser });
-      return { success: true, user: mockUser };
+        dispatch({ type: 'AUTH_SUCCESS', payload: user });
+        return { success: true, user };
+      } else {
+        dispatch({ type: 'AUTH_ERROR', payload: response.data.message });
+        return { success: false, error: response.data.message };
+      }
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Login failed';
       dispatch({ type: 'AUTH_ERROR', payload: errorMessage });
@@ -118,28 +128,34 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'AUTH_START' });
     
     try {
-      // Simulate API call - replace with actual API call
-      const newUser = {
-        id: Date.now().toString(),
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        email: userData.email,
-        phone: userData.phone,
-        role: 'customer',
-        addresses: [],
-        preferences: {},
-        createdAt: new Date(),
-        lastLogin: new Date()
+      // Map frontend role names to backend role names
+      const mappedUserData = {
+        ...userData,
+        role: userData.role === 'customer' ? 'user' : 
+              userData.role === 'shopkeeper' ? 'admin' : userData.role
       };
 
-      const mockToken = 'mock-jwt-token-' + Date.now();
+      const response = await api.post('/auth/register', mappedUserData);
+      
+      if (response.data.success) {
+        const { user, token, requiresApproval } = response.data.data;
+        
+        // Only store in localStorage if customer (shopkeepers need approval)
+        if (!requiresApproval && token) {
+          storage.setToken(token);
+          storage.setUser(user);
+          dispatch({ type: 'AUTH_SUCCESS', payload: user });
+        }
 
-      // Store in localStorage
-      storage.setToken(mockToken);
-      storage.setUser(newUser);
-
-      dispatch({ type: 'AUTH_SUCCESS', payload: newUser });
-      return { success: true, user: newUser };
+        return { 
+          success: true, 
+          user,
+          requiresApproval: requiresApproval || false
+        };
+      } else {
+        dispatch({ type: 'AUTH_ERROR', payload: response.data.message });
+        return { success: false, error: response.data.message };
+      }
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Registration failed';
       dispatch({ type: 'AUTH_ERROR', payload: errorMessage });
@@ -148,7 +164,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   // Logout function
-  const logout = () => {
+  const logout = async () => {
+    try {
+      // Call logout endpoint
+      await api.post('/auth/logout');
+    } catch (error) {
+      // Even if logout API fails, clear local storage
+      console.error('Logout API error:', error);
+    }
+    
+    // Clear local storage
     storage.removeToken();
     storage.removeUser();
     dispatch({ type: 'LOGOUT' });
@@ -162,12 +187,19 @@ export const AuthProvider = ({ children }) => {
   // Update user profile
   const updateProfile = async (userData) => {
     try {
-      const updatedUser = { ...state.user, ...userData };
-      storage.setUser(updatedUser);
-      dispatch({ type: 'AUTH_SUCCESS', payload: updatedUser });
-      return { success: true, user: updatedUser };
+      const response = await api.put('/users/profile', userData);
+      
+      if (response.data.success) {
+        const updatedUser = response.data.data.user;
+        storage.setUser(updatedUser);
+        dispatch({ type: 'AUTH_SUCCESS', payload: updatedUser });
+        return { success: true, user: updatedUser };
+      } else {
+        return { success: false, error: response.data.message };
+      }
     } catch (error) {
-      return { success: false, error: 'Profile update failed' };
+      const errorMessage = error.response?.data?.message || 'Profile update failed';
+      return { success: false, error: errorMessage };
     }
   };
 

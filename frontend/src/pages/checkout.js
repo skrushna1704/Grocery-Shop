@@ -42,9 +42,9 @@ export default function CheckoutPage() {
     phone: user?.phone || '',
     addressLine1: '',
     addressLine2: '',
-    city: 'Pimpri-Chinchwad',
+    city: 'Pimpri(kalgaon)',
     state: 'Maharashtra',
-    pincode: '',
+    pincode: '445102',
     landmark: '',
     isDefault: false
   });
@@ -54,14 +54,14 @@ export default function CheckoutPage() {
   const [savedAddresses] = useState([
     {
       id: 1,
-      fullName: 'John Doe',
-      phone: '9359881657',
-      addressLine1: 'Flat 101, Green Heights',
-      addressLine2: 'Sector 15, Pimpri',
-      city: 'Pimpri-Chinchwad',
+      fullName: 'Sanjay Nimbarte',
+      phone: '9999999999',
+      addressLine1: 'Behind ZP Marathi School',
+      addressLine2: 'Pimpri(kalgaon)',
+      city: 'Pimpri(kalgaon)',
       state: 'Maharashtra',
-      pincode: '411017',
-      landmark: 'Near City Mall',
+      pincode: '445102',
+      landmark: 'Near Mumbai Nagpur Highway',
       isDefault: true
     }
   ]);
@@ -134,8 +134,10 @@ export default function CheckoutPage() {
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Clear cart and redirect to success page
-      clearCart();
       router.replace('/order-success');
+      if(router.pathname === '/order-success'){
+        clearCart();
+      }
     } catch (error) {
       console.error('Order placement failed:', error);
       alert('Failed to place order. Please try again.');

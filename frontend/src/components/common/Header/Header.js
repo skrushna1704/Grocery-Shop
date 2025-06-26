@@ -148,7 +148,7 @@ const Header = () => {
                 alt="Jumale Grocery Logo"
                 width={48}
                 height={48}
-                className="w-12 h-12 lg:w-14 lg:h-14 object-contain"
+                className="w-12 h-12 lg:w-14 lg:h-14 object-contain transition-transform duration-300 ease-in-out hover:scale-125 hover:drop-shadow-lg hover:rotate-12 hover:border-1 hover:border-green-600 rounded-full "
                 priority
               />
               <div className="hidden sm:block">

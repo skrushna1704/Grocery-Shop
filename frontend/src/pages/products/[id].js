@@ -27,54 +27,7 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import ProductCard from '@/components/product/ProductCard';
-
-// Mock product data
-const mockProduct = {
-  id: 1,
-  name: 'Fresh Organic Tomatoes',
-  price: 45,
-  originalPrice: 60,
-  images: [
-    '/images/products/tomatoes-1.jpg',
-    '/images/products/tomatoes-2.jpg',
-    '/images/products/tomatoes-3.jpg',
-    '/images/products/tomatoes-4.jpg'
-  ],
-  rating: 4.5,
-  reviewCount: 128,
-  category: 'vegetables',
-  subcategory: 'fresh-vegetables',
-  unit: 'per kg',
-  inStock: true,
-  stockQuantity: 50,
-  vendor: { 
-    id: 1, 
-    name: 'Fresh Farm', 
-    rating: 4.8,
-    location: 'Pimpri(Kalgaon)',
-    established: 2015
-  },
-  description: 'Premium quality organic tomatoes, freshly harvested from our certified organic farms. These tomatoes are rich in vitamins, minerals, and antioxidants. Perfect for cooking, salads, and sauces.',
-  nutritionalInfo: {
-    calories: 18,
-    protein: 0.9,
-    carbs: 3.9,
-    fiber: 1.2,
-    vitamin_c: 28,
-    potassium: 237
-  },
-  features: [
-    'Certified Organic',
-    'Pesticide Free',
-    'Rich in Lycopene',
-    'Freshly Harvested',
-    'Farm to Table'
-  ],
-  tags: ['organic', 'fresh', 'local', 'healthy'],
-  shelfLife: '5-7 days',
-  storage: 'Store in a cool, dry place',
-  origin: 'Maharashtra, India'
-};
+import { mockProducts } from '@/components/product/ProductCard/mockdata';
 
 // Mock reviews
 const mockReviews = [
@@ -110,37 +63,85 @@ const mockReviews = [
   }
 ];
 
-// Mock related products
-const relatedProducts = [
-  {
-    id: 2,
-    name: 'Fresh Onions',
-    price: 30,
-    originalPrice: 35,
-    images: ['/images/products/onions.jpg'],
-    rating: 4.3,
-    reviewCount: 89,
-    category: 'vegetables',
-    unit: 'per kg',
-    inStock: true,
-    stockQuantity: 40,
-    vendor: { id: 1, name: 'Fresh Farm', rating: 4.8 }
-  },
-  {
-    id: 3,
-    name: 'Green Bell Peppers',
-    price: 80,
-    originalPrice: 100,
-    images: ['/images/products/bell-peppers.jpg'],
-    rating: 4.6,
-    reviewCount: 67,
-    category: 'vegetables',
-    unit: 'per kg',
-    inStock: true,
-    stockQuantity: 25,
-    vendor: { id: 1, name: 'Fresh Farm', rating: 4.8 }
-  }
-];
+// Helper function to get related products
+const getRelatedProducts = (currentProduct, allProducts, limit = 4) => {
+  if (!currentProduct) return [];
+  
+  return allProducts
+    .filter(product => 
+      product.id !== currentProduct.id && 
+      (product.category === currentProduct.category || 
+       product.vendor.id === currentProduct.vendor.id)
+    )
+    .slice(0, limit);
+};
+
+// Helper function to enhance product data with missing properties
+const enhanceProductData = (product) => {
+  if (!product) return null;
+  
+  // Generate realistic descriptions based on category
+  const getDescription = (product) => {
+    const descriptions = {
+      vegetables: `${product.name} - Fresh, crisp, and nutritious vegetables harvested at peak ripeness. Rich in vitamins, minerals, and antioxidants. Perfect for salads, cooking, and healthy meals.`,
+      fruits: `${product.name} - Sweet, juicy, and naturally ripened fruits packed with essential nutrients. Great for snacking, smoothies, and desserts.`,
+      dairy: `${product.name} - Premium quality dairy products sourced from trusted farms. Rich in calcium and protein, perfect for daily nutrition.`,
+      grains: `${product.name} - High-quality grains carefully selected and processed to maintain nutritional value. Ideal for healthy cooking and baking.`,
+      beverages: `${product.name} - Refreshing and natural beverages made from quality ingredients. Perfect for hydration and enjoyment.`,
+      bakery: `${product.name} - Freshly baked goods made with premium ingredients. Soft, delicious, and perfect for any time of day.`,
+      oils: `${product.name} - Pure and natural oils extracted using traditional methods. Rich in healthy fats and essential nutrients.`,
+      sweeteners: `${product.name} - Natural sweeteners sourced from the finest ingredients. Perfect for healthy cooking and baking.`
+    };
+    
+    return descriptions[product.category] || `${product.name} - Premium quality ${product.category} available at competitive prices.`;
+  };
+
+  // Generate realistic features based on category
+  const getFeatures = (product) => {
+    const baseFeatures = ['Fresh Quality', 'Premium Grade', 'Carefully Selected'];
+    
+    const categoryFeatures = {
+      vegetables: ['Pesticide Free', 'Rich in Nutrients', 'Freshly Harvested', 'Farm to Table'],
+      fruits: ['Naturally Ripened', 'Sweet & Juicy', 'Rich in Vitamins', 'Fresh Daily'],
+      dairy: ['Farm Fresh', 'Pasteurized', 'Rich in Calcium', 'High Protein'],
+      grains: ['Whole Grain', 'Nutrient Rich', 'Carefully Processed', 'Long Shelf Life'],
+      beverages: ['Natural Ingredients', 'No Preservatives', 'Refreshing Taste', 'Healthy Choice'],
+      bakery: ['Freshly Baked', 'Soft Texture', 'Premium Ingredients', 'Daily Fresh'],
+      oils: ['Cold Pressed', 'Pure & Natural', 'Rich in Nutrients', 'Traditional Method'],
+      sweeteners: ['Natural Source', 'Pure Quality', 'Healthy Alternative', 'No Additives']
+    };
+    
+    return [...baseFeatures, ...(categoryFeatures[product.category] || ['Best Quality', 'Fast Delivery'])];
+  };
+
+  return {
+    ...product,
+    // Add missing properties that the component expects
+    subcategory: product.subcategory || 'fresh-vegetables',
+    description: product.description || getDescription(product),
+    nutritionalInfo: product.nutritionalInfo || {
+      calories: Math.floor(Math.random() * 100) + 50,
+      protein: (Math.random() * 5 + 1).toFixed(1),
+      carbs: (Math.random() * 20 + 5).toFixed(1),
+      fiber: (Math.random() * 5 + 1).toFixed(1),
+      vitamin_c: Math.floor(Math.random() * 50) + 10,
+      potassium: Math.floor(Math.random() * 300) + 100
+    },
+    features: product.features || getFeatures(product),
+    tags: product.tags || ['fresh', 'quality', 'premium'],
+    shelfLife: product.shelfLife || '5-7 days',
+    storage: product.storage || 'Store in a cool, dry place',
+    origin: product.origin || 'Maharashtra, India',
+    // Ensure images is always an array
+    images: Array.isArray(product.images) ? product.images : [product.images || '/images/placeholder.jpg'],
+    // Add vendor location if missing
+    vendor: {
+      ...product.vendor,
+      location: product.vendor.location || 'Pimpri(Kalgaon)',
+      established: product.vendor.established || 2015
+    }
+  };
+};
 
 export default function ProductDetailPage() {
   const router = useRouter();
@@ -155,6 +156,7 @@ export default function ProductDetailPage() {
   const [activeTab, setActiveTab] = useState('description');
   const [reviews, setReviews] = useState(mockReviews);
   const [sortReviews, setSortReviews] = useState('newest');
+  const [relatedProducts, setRelatedProducts] = useState([]);
 
   // Simulate API call
   useEffect(() => {
@@ -162,7 +164,17 @@ export default function ProductDetailPage() {
       setLoading(true);
       // Simulate API delay
       setTimeout(() => {
-        setProduct(mockProduct);
+        const foundProduct = mockProducts.find(p => p.id === parseInt(id));
+        if (foundProduct) {
+          const enhancedProduct = enhanceProductData(foundProduct);
+          setProduct(enhancedProduct);
+          
+          // Get related products
+          const related = getRelatedProducts(enhancedProduct, mockProducts);
+          setRelatedProducts(related);
+        } else {
+          setProduct(null);
+        }
         setLoading(false);
       }, 500);
     }
@@ -414,30 +426,7 @@ export default function ProductDetailPage() {
 
               {/* Quantity and Add to Cart */}
               <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Quantity
-                    </label>
-                    <div className="flex items-center border border-gray-300 rounded-md">
-                      <button
-                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                        className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50"
-                        disabled={quantity <= 1}
-                      >
-                        <Minus className="w-4 h-4" />
-                      </button>
-                      <span className="w-16 text-center font-medium">{quantity}</span>
-                      <button
-                        onClick={() => setQuantity(Math.min(product.stockQuantity, quantity + 1))}
-                        className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-50"
-                        disabled={quantity >= product.stockQuantity}
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                  
+                <div className="flex items-center space-x-4">          
                   {product.stockQuantity <= 10 && (
                     <div className="text-sm text-orange-600">
                       Only {product.stockQuantity} left in stock

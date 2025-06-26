@@ -1,8 +1,11 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { CheckCircle, Truck, ShoppingBag, Clock } from 'lucide-react';
-
+import { useCart } from '@/context/CartContext';
+import { useRouter } from 'next/router';
 export default function OrderSuccessPage() {
+  const {  clearCart } = useCart();
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -30,7 +33,10 @@ export default function OrderSuccessPage() {
             <span className="text-gray-500 text-sm">Order #123456</span>
           </div> */}
           <Link href="/" className="inline-block mt-4">
-            <button className="px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors">
+            <button className="px-6 py-3 bg-primary-500 text-white rounded-lg font-medium hover:bg-primary-600 transition-colors" onClick={()=>{
+              router.replace('/');
+              clearCart();
+            }}>
               Continue Shopping
             </button>
           </Link>
