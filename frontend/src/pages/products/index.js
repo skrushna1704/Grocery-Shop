@@ -15,147 +15,17 @@ import ProductCard from '@/components/product/ProductCard';
 import ProductFilters from '@/components/product/ProductFilters';
 import Button from '@/components/ui/Button';
 import { SORT_OPTIONS, PRODUCT_CATEGORIES } from '@/utils/constants';
-import { mockProducts } from '@/components/product/ProductCard/mockdata';
-
-// Mock products data
-// const mockProducts = [
-//   {
-//     id: 1,
-//     name: 'Fresh Organic Tomatoes',
-//     price: 45,
-//     originalPrice: 60,
-//     images: ['/images/products/tomatoes.jpg'],
-//     rating: 4.5,
-//     reviewCount: 128,
-//     category: 'vegetables',
-//     unit: 'per kg',
-//     inStock: true,
-//     stockQuantity: 50,
-//     vendor: { id: 1, name: 'Fresh Farm', rating: 4.8 },
-//     discount: 25,
-//     tags: ['organic', 'fresh', 'local']
-//   },
-//   {
-//     id: 2,
-//     name: 'Organic Bananas',
-//     price: 35,
-//     originalPrice: 40,
-//     images: ['/images/products/bananas.jpg'],
-//     rating: 4.3,
-//     reviewCount: 89,
-//     category: 'fruits',
-//     unit: 'per dozen',
-//     inStock: true,
-//     stockQuantity: 30,
-//     vendor: { id: 2, name: 'Organic Valley', rating: 4.6 },
-//     discount: 12,
-//     tags: ['organic', 'ripe', 'sweet']
-//   },
-//   {
-//     id: 3,
-//     name: 'Fresh Whole Milk',
-//     price: 28,
-//     originalPrice: 32,
-//     images: ['/images/products/milk.jpg'],
-//     rating: 4.7,
-//     reviewCount: 156,
-//     category: 'dairy',
-//     unit: 'per liter',
-//     inStock: true,
-//     stockQuantity: 25,
-//     vendor: { id: 3, name: 'Daily Fresh', rating: 4.9 },
-//     discount: 15,
-//     tags: ['fresh', 'full-fat', 'pasteurized']
-//   },
-//   {
-//     id: 4,
-//     name: 'Basmati Rice Premium',
-//     price: 120,
-//     originalPrice: 150,
-//     images: ['/images/products/rice.jpg'],
-//     rating: 4.6,
-//     reviewCount: 203,
-//     category: 'grains',
-//     unit: 'per kg',
-//     inStock: true,
-//     stockQuantity: 40,
-//     vendor: { id: 4, name: 'Golden Grains', rating: 4.7 },
-//     discount: 20,
-//     tags: ['premium', 'aged', 'aromatic']
-//   },
-//   {
-//     id: 5,
-//     name: 'Fresh Green Spinach',
-//     price: 25,
-//     originalPrice: 30,
-//     images: ['/images/products/spinach.jpg'],
-//     rating: 4.4,
-//     reviewCount: 67,
-//     category: 'vegetables',
-//     unit: 'per bunch',
-//     inStock: true,
-//     stockQuantity: 20,
-//     vendor: { id: 1, name: 'Fresh Farm', rating: 4.8 },
-//     discount: 16,
-//     tags: ['fresh', 'green', 'nutritious']
-//   },
-//   {
-//     id: 6,
-//     name: 'Organic Carrots',
-//     price: 40,
-//     originalPrice: 50,
-//     images: ['/images/products/carrots.jpg'],
-//     rating: 4.6,
-//     reviewCount: 89,
-//     category: 'vegetables',
-//     unit: 'per kg',
-//     inStock: true,
-//     stockQuantity: 15,
-//     vendor: { id: 2, name: 'Organic Valley', rating: 4.6 },
-//     discount: 20,
-//     tags: ['organic', 'crunchy', 'sweet']
-//   },
-//   {
-//     id: 7,
-//     name: 'Fresh Apples Red',
-//     price: 80,
-//     originalPrice: 100,
-//     images: ['/images/products/apples.jpg'],
-//     rating: 4.5,
-//     reviewCount: 134,
-//     category: 'fruits',
-//     unit: 'per kg',
-//     inStock: true,
-//     stockQuantity: 35,
-//     vendor: { id: 5, name: 'Fruit Paradise', rating: 4.7 },
-//     discount: 20,
-//     tags: ['fresh', 'crispy', 'red']
-//   },
-//   {
-//     id: 8,
-//     name: 'Greek Yogurt',
-//     price: 45,
-//     originalPrice: 55,
-//     images: ['/images/products/yogurt.jpg'],
-//     rating: 4.8,
-//     reviewCount: 92,
-//     category: 'dairy',
-//     unit: 'per 200g',
-//     inStock: true,
-//     stockQuantity: 22,
-//     vendor: { id: 3, name: 'Daily Fresh', rating: 4.9 },
-//     discount: 18,
-//     tags: ['thick', 'creamy', 'protein-rich']
-//   }
-// ];
+import { productService, transformProductsData } from '@/utils/productService';
+import toast from 'react-hot-toast';
 
 export default function ProductsPage() {
   const router = useRouter();
   const { category, search, sort } = router.query;
   
-  const [products, setProducts] = useState(mockProducts);
-  const [filteredProducts, setFilteredProducts] = useState(mockProducts);
-  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState(sort || 'relevance');
@@ -167,33 +37,100 @@ export default function ProductsPage() {
     search: search || ''
   });
 
-  // Apply filters and sorting
+  // Fetch products from backend
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        console.log('🔄 Fetching products...');
+        setLoading(true);
+        setError(null);
+        
+        // Build API parameters
+        const params = {
+          status: 'active',
+          limit: 50 // Get more products for filtering
+        };
+
+        // Add search parameter
+        if (activeFilters.search) {
+          params.search = activeFilters.search;
+        }
+
+        // Add category filter
+        if (activeFilters.categories.length === 1) {
+          params.category = activeFilters.categories[0];
+        }
+
+        // Add price range
+        if (activeFilters.priceRange.min > 0) {
+          params.minPrice = activeFilters.priceRange.min;
+        }
+        if (activeFilters.priceRange.max < 1000) {
+          params.maxPrice = activeFilters.priceRange.max;
+        }
+
+        // Add sorting
+        if (sortBy !== 'relevance') {
+          switch (sortBy) {
+            case 'price_low_high':
+              params.sortBy = 'price';
+              params.sortOrder = 'asc';
+              break;
+            case 'price_high_low':
+              params.sortBy = 'price';
+              params.sortOrder = 'desc';
+              break;
+            case 'rating':
+              params.sortBy = 'ratings.average';
+              params.sortOrder = 'desc';
+              break;
+            case 'newest':
+              params.sortBy = 'createdAt';
+              params.sortOrder = 'desc';
+              break;
+            case 'popularity':
+              params.sortBy = 'ratings.count';
+              params.sortOrder = 'desc';
+              break;
+            case 'discount':
+              params.sortBy = 'discountPercentage';
+              params.sortOrder = 'desc';
+              break;
+            default:
+              params.sortBy = 'createdAt';
+              params.sortOrder = 'desc';
+          }
+        }
+
+        console.log('📡 API params:', params);
+        const response = await productService.getProducts(params);
+        console.log('✅ API response:', response);
+        
+        if (response.success) {
+          const transformedProducts = transformProductsData(response.data.products);
+          console.log('🔄 Transformed products:', transformedProducts);
+          setProducts(transformedProducts);
+          setFilteredProducts(transformedProducts);
+        } else {
+          console.error('❌ API failed:', response);
+          setError('Failed to fetch products');
+          toast.error('Failed to load products');
+        }
+      } catch (err) {
+        console.error('❌ Error fetching products:', err);
+        setError('Failed to fetch products');
+        toast.error('Failed to load products');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, [activeFilters.search, activeFilters.categories, sortBy]);
+
+  // Apply client-side filters
   useEffect(() => {
     let filtered = [...products];
-
-    // Apply search filter
-    if (activeFilters.search) {
-      const searchTerm = activeFilters.search.toLowerCase();
-      filtered = filtered.filter(product =>
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.category.toLowerCase().includes(searchTerm) ||
-        product.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
-        product.vendor.name.toLowerCase().includes(searchTerm)
-      );
-    }
-
-    // Apply category filter
-    if (activeFilters.categories.length > 0) {
-      filtered = filtered.filter(product =>
-        activeFilters.categories.includes(product.category)
-      );
-    }
-
-    // Apply price range filter
-    filtered = filtered.filter(product =>
-      product.price >= activeFilters.priceRange.min &&
-      product.price <= activeFilters.priceRange.max
-    );
 
     // Apply rating filter
     if (activeFilters.rating > 0) {
@@ -207,38 +144,8 @@ export default function ProductsPage() {
       filtered = filtered.filter(product => product.inStock);
     }
 
-    // Apply sorting
-    switch (sortBy) {
-      case 'price_low_high':
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case 'price_high_low':
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case 'rating':
-        filtered.sort((a, b) => b.rating - a.rating);
-        break;
-      case 'newest':
-        // For demo purposes, sorting by id (newer products have higher ids)
-        filtered.sort((a, b) => b.id - a.id);
-        break;
-      case 'popularity':
-        filtered.sort((a, b) => b.reviewCount - a.reviewCount);
-        break;
-      case 'discount':
-        filtered.sort((a, b) => {
-          const aDiscount = a.originalPrice ? ((a.originalPrice - a.price) / a.originalPrice) * 100 : 0;
-          const bDiscount = b.originalPrice ? ((b.originalPrice - b.price) / b.originalPrice) * 100 : 0;
-          return bDiscount - aDiscount;
-        });
-        break;
-      default:
-        // Relevance - keep original order
-        break;
-    }
-
     setFilteredProducts(filtered);
-  }, [products, activeFilters, sortBy]);
+  }, [products, activeFilters.rating, activeFilters.inStock]);
 
   // Update URL when filters change
   useEffect(() => {
@@ -328,7 +235,7 @@ export default function ProductsPage() {
                   }
                 </h1>
                 <p className="text-gray-600 mt-1">
-                  {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found
+                  {loading ? 'Loading...' : `${filteredProducts.length} ${filteredProducts.length === 1 ? 'product' : 'products'} found`}
                 </p>
               </div>
 
@@ -452,6 +359,21 @@ export default function ProductsPage() {
               {loading ? (
                 <div className="flex items-center justify-center py-12">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+                </div>
+              ) : error ? (
+                <div className="text-center py-12">
+                  <div className="text-red-500 mb-4">
+                    <Search className="w-12 h-12 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      Error loading products
+                    </h3>
+                    <p className="text-gray-600 mb-6">
+                      {error}
+                    </p>
+                    <Button onClick={() => window.location.reload()}>
+                      Try Again
+                    </Button>
+                  </div>
                 </div>
               ) : filteredProducts.length > 0 ? (
                 <motion.div

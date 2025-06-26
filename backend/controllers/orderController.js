@@ -47,6 +47,7 @@ export const createOrder = async (req, res, next) => {
         price: product.price,
         quantity: item.quantity,
         total: itemTotal,
+        unit: item.unit || product.unit || 'pcs',
         image: product.mainImage?.url || product.images[0]?.url
       });
 
@@ -60,16 +61,35 @@ export const createOrder = async (req, res, next) => {
     const shippingCost = calculateShippingCost(subtotal);
     const total = subtotal + tax + shippingCost;
 
+    // Ensure billingAddress is present
+    let billingAddress = req.body.billingAddress;
+    if (!billingAddress) {
+      billingAddress = shippingAddress;
+    }
+
+    // Ensure all required fields in billingAddress
+    const requiredBillingFields = ['addressLine1', 'city', 'state', 'postalCode', 'phone'];
+    for (const field of requiredBillingFields) {
+      if (!billingAddress[field]) {
+        return res.status(400).json(errorResponse(`Billing address missing required field: ${field}`));
+      }
+    }
+
+    // Set createdBy from authenticated user
+    const createdBy = req.user.id;
+
     // Create order
     const order = await Order.create({
       orderNumber: generateOrderNumber(),
       user: req.user.id,
+      createdBy,
       items: orderItems,
       subtotal,
       tax,
       shippingCost,
       total,
       shippingAddress,
+      billingAddress,
       paymentMethod,
       status: 'pending'
     });

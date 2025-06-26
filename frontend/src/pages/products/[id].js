@@ -27,9 +27,10 @@ import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Badge from '@/components/ui/Badge';
 import ProductCard from '@/components/product/ProductCard';
-import { mockProducts } from '@/components/product/ProductCard/mockdata';
+import { productService, transformProductData, transformProductsData } from '@/utils/productService';
+import toast from 'react-hot-toast';
 
-// Mock reviews
+// Mock reviews (will be replaced with backend data)
 const mockReviews = [
   {
     id: 1,
@@ -76,73 +77,6 @@ const getRelatedProducts = (currentProduct, allProducts, limit = 4) => {
     .slice(0, limit);
 };
 
-// Helper function to enhance product data with missing properties
-const enhanceProductData = (product) => {
-  if (!product) return null;
-  
-  // Generate realistic descriptions based on category
-  const getDescription = (product) => {
-    const descriptions = {
-      vegetables: `${product.name} - Fresh, crisp, and nutritious vegetables harvested at peak ripeness. Rich in vitamins, minerals, and antioxidants. Perfect for salads, cooking, and healthy meals.`,
-      fruits: `${product.name} - Sweet, juicy, and naturally ripened fruits packed with essential nutrients. Great for snacking, smoothies, and desserts.`,
-      dairy: `${product.name} - Premium quality dairy products sourced from trusted farms. Rich in calcium and protein, perfect for daily nutrition.`,
-      grains: `${product.name} - High-quality grains carefully selected and processed to maintain nutritional value. Ideal for healthy cooking and baking.`,
-      beverages: `${product.name} - Refreshing and natural beverages made from quality ingredients. Perfect for hydration and enjoyment.`,
-      bakery: `${product.name} - Freshly baked goods made with premium ingredients. Soft, delicious, and perfect for any time of day.`,
-      oils: `${product.name} - Pure and natural oils extracted using traditional methods. Rich in healthy fats and essential nutrients.`,
-      sweeteners: `${product.name} - Natural sweeteners sourced from the finest ingredients. Perfect for healthy cooking and baking.`
-    };
-    
-    return descriptions[product.category] || `${product.name} - Premium quality ${product.category} available at competitive prices.`;
-  };
-
-  // Generate realistic features based on category
-  const getFeatures = (product) => {
-    const baseFeatures = ['Fresh Quality', 'Premium Grade', 'Carefully Selected'];
-    
-    const categoryFeatures = {
-      vegetables: ['Pesticide Free', 'Rich in Nutrients', 'Freshly Harvested', 'Farm to Table'],
-      fruits: ['Naturally Ripened', 'Sweet & Juicy', 'Rich in Vitamins', 'Fresh Daily'],
-      dairy: ['Farm Fresh', 'Pasteurized', 'Rich in Calcium', 'High Protein'],
-      grains: ['Whole Grain', 'Nutrient Rich', 'Carefully Processed', 'Long Shelf Life'],
-      beverages: ['Natural Ingredients', 'No Preservatives', 'Refreshing Taste', 'Healthy Choice'],
-      bakery: ['Freshly Baked', 'Soft Texture', 'Premium Ingredients', 'Daily Fresh'],
-      oils: ['Cold Pressed', 'Pure & Natural', 'Rich in Nutrients', 'Traditional Method'],
-      sweeteners: ['Natural Source', 'Pure Quality', 'Healthy Alternative', 'No Additives']
-    };
-    
-    return [...baseFeatures, ...(categoryFeatures[product.category] || ['Best Quality', 'Fast Delivery'])];
-  };
-
-  return {
-    ...product,
-    // Add missing properties that the component expects
-    subcategory: product.subcategory || 'fresh-vegetables',
-    description: product.description || getDescription(product),
-    nutritionalInfo: product.nutritionalInfo || {
-      calories: Math.floor(Math.random() * 100) + 50,
-      protein: (Math.random() * 5 + 1).toFixed(1),
-      carbs: (Math.random() * 20 + 5).toFixed(1),
-      fiber: (Math.random() * 5 + 1).toFixed(1),
-      vitamin_c: Math.floor(Math.random() * 50) + 10,
-      potassium: Math.floor(Math.random() * 300) + 100
-    },
-    features: product.features || getFeatures(product),
-    tags: product.tags || ['fresh', 'quality', 'premium'],
-    shelfLife: product.shelfLife || '5-7 days',
-    storage: product.storage || 'Store in a cool, dry place',
-    origin: product.origin || 'Maharashtra, India',
-    // Ensure images is always an array
-    images: Array.isArray(product.images) ? product.images : [product.images || '/images/placeholder.jpg'],
-    // Add vendor location if missing
-    vendor: {
-      ...product.vendor,
-      location: product.vendor.location || 'Pimpri(Kalgaon)',
-      established: product.vendor.established || 2015
-    }
-  };
-};
-
 export default function ProductDetailPage() {
   const router = useRouter();
   const { id } = router.query;
@@ -151,33 +85,67 @@ export default function ProductDetailPage() {
   
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
-  const [reviews, setReviews] = useState(mockReviews);
+  const [reviews, setReviews] = useState([]);
   const [sortReviews, setSortReviews] = useState('newest');
   const [relatedProducts, setRelatedProducts] = useState([]);
 
-  // Simulate API call
+  // Fetch product from backend
   useEffect(() => {
-    if (id) {
-      setLoading(true);
-      // Simulate API delay
-      setTimeout(() => {
-        const foundProduct = mockProducts.find(p => p.id === parseInt(id));
-        if (foundProduct) {
-          const enhancedProduct = enhanceProductData(foundProduct);
-          setProduct(enhancedProduct);
+    const fetchProduct = async () => {
+      if (!id) return;
+      
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await productService.getProduct(id);
+        
+        if (response.success) {
+          const transformedProduct = transformProductData(response.data.product);
+          setProduct(transformedProduct);
           
-          // Get related products
-          const related = getRelatedProducts(enhancedProduct, mockProducts);
-          setRelatedProducts(related);
+          // Use backend reviews if available, otherwise use mock reviews
+          if (transformedProduct.reviews && transformedProduct.reviews.length > 0) {
+            setReviews(transformedProduct.reviews);
+          } else {
+            setReviews(mockReviews);
+          }
+          
+          // Fetch related products
+          try {
+            const relatedResponse = await productService.getProducts({
+              category: transformedProduct.categoryId,
+              limit: 10,
+              status: 'active'
+            });
+            
+            if (relatedResponse.success) {
+              const allProducts = transformProductsData(relatedResponse.data.products);
+              const related = getRelatedProducts(transformedProduct, allProducts);
+              setRelatedProducts(related);
+            }
+          } catch (err) {
+            console.error('Error fetching related products:', err);
+            // Don't show error for related products
+          }
         } else {
-          setProduct(null);
+          setError('Product not found');
+          toast.error('Product not found');
         }
+      } catch (err) {
+        console.error('Error fetching product:', err);
+        setError('Failed to load product');
+        toast.error('Failed to load product');
+      } finally {
         setLoading(false);
-      }, 500);
-    }
+      }
+    };
+
+    fetchProduct();
   }, [id]);
 
   const cartQuantity = getItemQuantity(product?.id || 0);
@@ -187,12 +155,14 @@ export default function ProductDetailPage() {
     if (product) {
       addToCart(product, quantity);
       setQuantity(1);
+      toast.success('Added to cart!');
     }
   };
 
   const handleUpdateCartQuantity = (newQuantity) => {
     if (product) {
       updateQuantity(product.id, newQuantity);
+      toast.success('Cart updated!');
     }
   };
 
@@ -210,7 +180,7 @@ export default function ProductDetailPage() {
     } else {
       // Fallback - copy to clipboard
       navigator.clipboard.writeText(window.location.href);
-      alert('Link copied to clipboard!');
+      toast.success('Link copied to clipboard!');
     }
   };
 
@@ -273,11 +243,13 @@ export default function ProductDetailPage() {
     );
   }
 
-  if (!product) {
+  if (error || !product) {
     return (
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Product not found</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            {error || 'Product not found'}
+          </h1>
           <Link href="/products">
             <Button>Browse Products</Button>
           </Link>
@@ -340,25 +312,27 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Thumbnail Images */}
-              <div className="flex space-x-2 overflow-x-auto pb-2">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-colors ${
-                      selectedImage === index ? 'border-primary-500' : 'border-gray-200'
-                    }`}
-                  >
-                    <Image
-                      src={image || '/images/placeholder.jpg'}
-                      alt={`${product.name} ${index + 1}`}
-                      width={80}
-                      height={80}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
+              {product.images.length > 1 && (
+                <div className="flex space-x-2 overflow-x-auto pb-2">
+                  {product.images.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`flex-shrink-0 w-20 h-20 rounded-md overflow-hidden border-2 transition-colors ${
+                        selectedImage === index ? 'border-primary-500' : 'border-gray-200'
+                      }`}
+                    >
+                      <Image
+                        src={image || '/images/placeholder.jpg'}
+                        alt={`${product.name} ${index + 1}`}
+                        width={80}
+                        height={80}
+                        className="w-full h-full object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Product Info */}
@@ -413,21 +387,23 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Features */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Key Features</h3>
-                <div className="flex flex-wrap gap-2">
-                  {product.features.map((feature, index) => (
-                    <Badge key={index} variant="primary" size="sm">
-                      {feature}
-                    </Badge>
-                  ))}
+              {product.tags && product.tags.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-3">Key Features</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {product.tags.map((tag, index) => (
+                      <Badge key={index} variant="primary" size="sm">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Quantity and Add to Cart */}
               <div className="space-y-4">
                 <div className="flex items-center space-x-4">          
-                  {product.stockQuantity <= 10 && (
+                  {product.stockQuantity <= 10 && product.stockQuantity > 0 && (
                     <div className="text-sm text-orange-600">
                       Only {product.stockQuantity} left in stock
                     </div>
@@ -543,50 +519,74 @@ export default function ProductDetailPage() {
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-medium text-gray-900 mb-2">Storage</h4>
-                      <p className="text-gray-600">{product.storage}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 mb-2">Shelf Life</h4>
-                      <p className="text-gray-600">{product.shelfLife}</p>
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-gray-900 mb-2">Origin</h4>
-                      <p className="text-gray-600">{product.origin}</p>
-                    </div>
+                    {product.storage && (
+                      <div>
+                        <h4 className="font-medium text-gray-900 mb-2">Storage</h4>
+                        <p className="text-gray-600">{product.storage}</p>
+                      </div>
+                    )}
+                    {product.shelfLife && (
+                      <div>
+                        <h4 className="font-medium text-gray-900 mb-2">Shelf Life</h4>
+                        <p className="text-gray-600">{product.shelfLife}</p>
+                      </div>
+                    )}
+                    {product.origin && (
+                      <div>
+                        <h4 className="font-medium text-gray-900 mb-2">Origin</h4>
+                        <p className="text-gray-600">{product.origin}</p>
+                      </div>
+                    )}
+                    {product.brand && (
+                      <div>
+                        <h4 className="font-medium text-gray-900 mb-2">Brand</h4>
+                        <p className="text-gray-600">{product.brand}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
 
-              {activeTab === 'nutrition' && (
+              {activeTab === 'nutrition' && product.nutritionalInfo && (
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-4">Nutritional Information (per 100g)</h3>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.calories}</div>
-                      <div className="text-sm text-gray-600">Calories</div>
-                    </div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.protein}g</div>
-                      <div className="text-sm text-gray-600">Protein</div>
-                    </div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.carbs}g</div>
-                      <div className="text-sm text-gray-600">Carbs</div>
-                    </div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.fiber}g</div>
-                      <div className="text-sm text-gray-600">Fiber</div>
-                    </div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.vitamin_c}mg</div>
-                      <div className="text-sm text-gray-600">Vitamin C</div>
-                    </div>
-                    <div className="text-center p-4 bg-gray-50 rounded-lg">
-                      <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.potassium}mg</div>
-                      <div className="text-sm text-gray-600">Potassium</div>
-                    </div>
+                    {product.nutritionalInfo.calories && (
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.calories}</div>
+                        <div className="text-sm text-gray-600">Calories</div>
+                      </div>
+                    )}
+                    {product.nutritionalInfo.protein && (
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.protein}g</div>
+                        <div className="text-sm text-gray-600">Protein</div>
+                      </div>
+                    )}
+                    {product.nutritionalInfo.carbohydrates && (
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.carbohydrates}g</div>
+                        <div className="text-sm text-gray-600">Carbs</div>
+                      </div>
+                    )}
+                    {product.nutritionalInfo.fat && (
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.fat}g</div>
+                        <div className="text-sm text-gray-600">Fat</div>
+                      </div>
+                    )}
+                    {product.nutritionalInfo.fiber && (
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.fiber}g</div>
+                        <div className="text-sm text-gray-600">Fiber</div>
+                      </div>
+                    )}
+                    {product.nutritionalInfo.sugar && (
+                      <div className="text-center p-4 bg-gray-50 rounded-lg">
+                        <div className="text-2xl font-bold text-primary-600">{product.nutritionalInfo.sugar}g</div>
+                        <div className="text-sm text-gray-600">Sugar</div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}

@@ -102,7 +102,10 @@ userSchema.virtual('fullName').get(function() {
 
 // Virtual for default address
 userSchema.virtual('defaultAddress').get(function() {
-  return this.addresses.find(addr => addr.isDefault) || this.addresses[0];
+  if (Array.isArray(this.addresses) && this.addresses.length > 0) {
+    return this.addresses.find(addr => addr.isDefault) || this.addresses[0];
+  }
+  return undefined;
 });
 
 // Index for better query performance

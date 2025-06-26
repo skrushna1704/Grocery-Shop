@@ -24,6 +24,7 @@ import Card from '@/components/ui/Card';
 import Input from '@/components/ui/Input';
 import { DELIVERY_SLOTS, PAYMENT_METHODS } from '@/utils/constants';
 import PaymentForm from '@/components/checkout/PaymentForm/PaymentForm';
+import api from '@/utils/api';
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -130,17 +131,51 @@ export default function CheckoutPage() {
     setIsProcessing(true);
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const orderPayload = {
+        items: items.map(item => ({
+          product: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity,
+          unit: item.unit || 'pcs',
+          image: { url: (item.images && item.images[0]) || item.image || '', public_id: '' },
+          total: item.price * item.quantity
+        })),
+        shippingAddress: {
+          addressLine1: deliveryAddress.addressLine1,
+          addressLine2: deliveryAddress.addressLine2,
+          city: deliveryAddress.city,
+          state: deliveryAddress.state,
+          postalCode: deliveryAddress.pincode,
+          country: 'India',
+          phone: deliveryAddress.phone
+        },
+        billingAddress: {
+          addressLine1: deliveryAddress.addressLine1,
+          addressLine2: deliveryAddress.addressLine2,
+          city: deliveryAddress.city,
+          state: deliveryAddress.state,
+          postalCode: deliveryAddress.pincode,
+          country: 'India',
+          phone: deliveryAddress.phone
+        },
+        paymentMethod: paymentMethod,
+        deliveryInstructions: orderNotes || '',
+      };
 
-      // Clear cart and redirect to success page
-      router.replace('/order-success');
-      if(router.pathname === '/order-success'){
-        clearCart();
+      const response = await api.post('/orders', orderPayload);
+      const data = response.data;
+
+      if ((response.status === 200 || response.status === 201) && data.success) {
+          router.replace('/order-success');
+          clearCart();
+    
+      } else {
+        alert(data.message || 'Failed to place order. Please try again.');
       }
     } catch (error) {
       console.error('Order placement failed:', error);
-      alert('Failed to place order. Please try again.');
+      alert(error.response?.data?.message || 'Failed to place order. Please try again.');
     } finally {
       setIsProcessing(false);
     }
