@@ -271,7 +271,7 @@ const Header = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-2">
-                <Link href="/auth/login">
+                <Link href="/login">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -280,13 +280,13 @@ const Header = () => {
                     Sign In
                   </Button>
                 </Link>
-                <Link href="/auth/register">
+                <Link href="/register">
                   <Button size="sm" className="hidden lg:inline-flex">
                     Sign Up
                   </Button>
                 </Link>
                 <Link
-                  href="/auth/login"
+                  href="/login"
                   className="lg:hidden p-2 text-gray-600 hover:text-green-600 transition-colors"
                 >
                   <User className="w-6 h-6" />
@@ -358,7 +358,7 @@ const Header = () => {
               {/* Auth buttons for mobile */}
               {!isAuthenticated && (
                 <div className="pt-4 border-t border-gray-200 space-y-2">
-                  <Link href="/auth/login" className="block">
+                  <Link href="/login" className="block">
                     <Button
                       variant="ghost"
                       fullWidth
@@ -367,7 +367,7 @@ const Header = () => {
                       Sign In
                     </Button>
                   </Link>
-                  <Link href="/auth/register" className="block">
+                  <Link href="/register" className="block">
                     <Button
                       fullWidth
                       onClick={() => setIsMobileMenuOpen(false)}

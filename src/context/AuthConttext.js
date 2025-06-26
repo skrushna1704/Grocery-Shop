@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
         firstName: 'John',
         lastName: 'Doe',
         email: credentials.email,
-        phone: '+91 9876543210',
+        phone: '+91 9359881657',
         role: 'customer',
         addresses: [],
         preferences: {},

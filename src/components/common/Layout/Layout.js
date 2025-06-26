@@ -58,7 +58,7 @@ const Layout = ({
       logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://jumalegrocery.com'}/images/jumaleLogo.png`,
       contactPoint: {
         '@type': 'ContactPoint',
-        telephone: '+91-9876543210',
+        telephone: '+91-9359881657',
         contactType: 'customer service',
         areaServed: 'Pimpri(Kalgaon), Maharashtra, India'
       },

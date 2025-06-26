@@ -55,7 +55,7 @@ export default function CheckoutPage() {
     {
       id: 1,
       fullName: 'John Doe',
-      phone: '9876543210',
+      phone: '9359881657',
       addressLine1: 'Flat 101, Green Heights',
       addressLine2: 'Sector 15, Pimpri',
       city: 'Pimpri-Chinchwad',
@@ -76,7 +76,7 @@ export default function CheckoutPage() {
   // Redirect if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
-      router.replace(`/auth/login?redirect=${encodeURIComponent('/checkout')}`);
+      router.replace(`/login?redirect=${encodeURIComponent('/checkout')}`);
     }
   }, [isAuthenticated, router]);
 

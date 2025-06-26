@@ -237,6 +237,6 @@ export const COMPANY_INFO = {
     FACEBOOK: 'https://facebook.com/jumalegrocery',
     INSTAGRAM: 'https://instagram.com/jumalegrocery',
     TWITTER: 'https://twitter.com/jumalegrocery',
-    WHATSAPP: 'https://wa.me/919876543210'
+    WHATSAPP: 'https://wa.me/919359881657'
   }
 };

@@ -407,7 +407,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you need help with setup or have questions:
 
 - **Email**: support@jumalegrocery.com
-- **Phone**: +91 9876543210
+- **Phone**: +91 9359881657
 - **GitHub Issues**: [Create an issue](https://github.com/your-username/jumale-grocery-shop/issues)
 
 ## 🗺 Roadmap

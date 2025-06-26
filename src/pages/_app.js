@@ -64,9 +64,7 @@ function MyApp({ Component, pageProps }) {
   const useCustomLayout = Component.useCustomLayout || false;
 
   // Create a more granular key for better remounting
-  const componentKey = useCustomLayout 
-    ? `${router.pathname}${router.asPath !== router.pathname ? `-${JSON.stringify(router.query)}` : ''}`
-    : router.asPath;
+  const componentKey = router.asPath;
 
   return (
     <>

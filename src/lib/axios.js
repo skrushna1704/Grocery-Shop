@@ -35,7 +35,7 @@ instance.interceptors.response.use(
       // Handle unauthorized access
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token')
-        window.location.href = '/auth/login'
+        window.location.href = '/login'
       }
     }
     return Promise.reject(error)

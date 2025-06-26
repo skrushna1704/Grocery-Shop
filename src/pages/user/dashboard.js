@@ -110,7 +110,7 @@ export default function UserDashboard() {
   // Redirect if not authenticated
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      router.replace('/auth/login?redirect=/user/dashboard');
+      router.replace('/login?redirect=/user/dashboard');
     }
   }, [isAuthenticated, loading, router]);
 
