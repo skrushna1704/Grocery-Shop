@@ -1,0 +1,202 @@
+/* Order Summary Component Styles */
+.orderSummary {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+}
+
+.orderSummaryTitle {
+  @apply text-lg font-semibold text-gray-900 mb-4;
+}
+
+.orderSummarySection {
+  @apply mb-6;
+}
+
+.orderSummarySectionTitle {
+  @apply text-sm font-medium text-gray-900 mb-3;
+}
+
+.orderSummaryItems {
+  @apply space-y-3;
+}
+
+.orderSummaryItem {
+  @apply flex items-center space-x-3 p-3 bg-gray-50 rounded-md;
+}
+
+.orderSummaryItemImage {
+  @apply w-16 h-16 rounded-md object-cover;
+}
+
+.orderSummaryItemDetails {
+  @apply flex-1;
+}
+
+.orderSummaryItemName {
+  @apply text-sm font-medium text-gray-900;
+}
+
+.orderSummaryItemPrice {
+  @apply text-sm text-gray-600;
+}
+
+.orderSummaryItemQuantity {
+  @apply text-xs text-gray-500;
+}
+
+.orderSummaryItemTotal {
+  @apply text-sm font-medium text-gray-900;
+}
+
+.orderSummaryAddress {
+  @apply p-3 bg-gray-50 rounded-md;
+}
+
+.orderSummaryAddressText {
+  @apply text-sm text-gray-700;
+}
+
+.orderSummaryPayment {
+  @apply p-3 bg-gray-50 rounded-md;
+}
+
+.orderSummaryPaymentText {
+  @apply text-sm text-gray-700;
+}
+
+.orderSummaryNotes {
+  @apply space-y-2;
+}
+
+.orderSummaryNotesLabel {
+  @apply block text-sm font-medium text-gray-700;
+}
+
+.orderSummaryNotesTextarea {
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors resize-none;
+  min-height: 80px;
+}
+
+.orderSummaryTotals {
+  @apply border-t border-gray-200 pt-4 space-y-2;
+}
+
+.orderSummaryTotalRow {
+  @apply flex justify-between items-center text-sm;
+}
+
+.orderSummaryTotalLabel {
+  @apply text-gray-600;
+}
+
+.orderSummaryTotalValue {
+  @apply font-medium text-gray-900;
+}
+
+.orderSummaryGrandTotal {
+  @apply text-lg font-bold text-primary-600;
+}
+
+/* Dark mode styles */
+.dark .orderSummary {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .orderSummaryTitle {
+  @apply text-white;
+}
+
+.dark .orderSummarySectionTitle {
+  @apply text-white;
+}
+
+.dark .orderSummaryItem {
+  @apply bg-gray-700;
+}
+
+.dark .orderSummaryItemName {
+  @apply text-white;
+}
+
+.dark .orderSummaryItemPrice {
+  @apply text-gray-300;
+}
+
+.dark .orderSummaryItemQuantity {
+  @apply text-gray-400;
+}
+
+.dark .orderSummaryItemTotal {
+  @apply text-white;
+}
+
+.dark .orderSummaryAddress {
+  @apply bg-gray-700;
+}
+
+.dark .orderSummaryAddressText {
+  @apply text-gray-300;
+}
+
+.dark .orderSummaryPayment {
+  @apply bg-gray-700;
+}
+
+.dark .orderSummaryPaymentText {
+  @apply text-gray-300;
+}
+
+.dark .orderSummaryNotesLabel {
+  @apply text-gray-300;
+}
+
+.dark .orderSummaryNotesTextarea {
+  @apply bg-gray-700 border-gray-600 text-white;
+}
+
+.dark .orderSummaryTotals {
+  @apply border-gray-600;
+}
+
+.dark .orderSummaryTotalLabel {
+  @apply text-gray-400;
+}
+
+.dark .orderSummaryTotalValue {
+  @apply text-gray-200;
+}
+
+.dark .orderSummaryGrandTotal {
+  @apply text-primary-400;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .orderSummary {
+    @apply p-4;
+  }
+  
+  .orderSummaryItem {
+    @apply flex-col items-start space-x-0 space-y-2;
+  }
+  
+  .orderSummaryItemImage {
+    @apply w-12 h-12;
+  }
+}
+
+/* Animation */
+.orderSummaryEnter {
+  @apply opacity-0 transform translate-y-4;
+}
+
+.orderSummaryEnterActive {
+  @apply opacity-100 transform translate-y-0 transition-all duration-200;
+}
+
+.orderSummaryExit {
+  @apply opacity-100 transform translate-y-0;
+}
+
+.orderSummaryExitActive {
+  @apply opacity-0 transform translate-y-4 transition-all duration-200;
+} 

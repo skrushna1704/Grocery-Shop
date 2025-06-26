@@ -1,0 +1,340 @@
+/* Categories Page Styles */
+.categoriesPage {
+  @apply min-h-screen bg-gray-50;
+}
+
+/* Hero Section */
+.heroSection {
+  @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white py-16 px-4;
+}
+
+.heroContent {
+  @apply max-w-7xl mx-auto text-center;
+}
+
+.heroTitle {
+  @apply text-4xl md:text-5xl font-bold mb-4;
+}
+
+.heroSubtitle {
+  @apply text-xl md:text-2xl text-primary-100 max-w-3xl mx-auto;
+}
+
+/* Search Section */
+.searchSection {
+  @apply bg-white border-b border-gray-200 py-6 px-4;
+}
+
+.searchContainer {
+  @apply max-w-7xl mx-auto flex flex-col lg:flex-row gap-4 items-center justify-between;
+}
+
+.searchBar {
+  @apply flex-1 max-w-md;
+}
+
+.filterControls {
+  @apply flex items-center gap-3;
+}
+
+.filterButton {
+  @apply flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors;
+}
+
+.sortSelect {
+  @apply px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500;
+}
+
+/* Featured Section */
+.featuredSection {
+  @apply py-12 px-4;
+}
+
+.sectionHeader {
+  @apply max-w-7xl mx-auto mb-8 text-center;
+}
+
+.sectionTitle {
+  @apply text-3xl font-bold text-gray-900 mb-2;
+}
+
+.sectionDescription {
+  @apply text-lg text-gray-600;
+}
+
+.categoriesGrid {
+  @apply max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6;
+}
+
+/* Category Card */
+.categoryCard {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-300 cursor-pointer;
+}
+
+.categoryImageContainer {
+  @apply relative h-48 overflow-hidden;
+}
+
+.categoryImage {
+  @apply w-full h-full object-cover transition-transform duration-300;
+}
+
+.categoryCard:hover .categoryImage {
+  @apply scale-105;
+}
+
+.categoryOverlay {
+  @apply absolute inset-0 bg-black bg-opacity-20;
+}
+
+.categoryBadge {
+  @apply absolute top-3 right-3 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1;
+}
+
+.categoryContent {
+  @apply p-4;
+}
+
+.categoryName {
+  @apply text-lg font-semibold text-gray-900 mb-2 line-clamp-2;
+}
+
+.categoryDescription {
+  @apply text-sm text-gray-600 mb-3 line-clamp-2;
+}
+
+.categoryMeta {
+  @apply flex items-center justify-between;
+}
+
+.productCount {
+  @apply text-sm text-gray-500;
+}
+
+.exploreButton {
+  @apply flex items-center gap-1 text-primary-600 hover:text-primary-700 font-medium text-sm transition-colors;
+}
+
+/* All Categories Section */
+.allCategoriesSection {
+  @apply py-12 px-4 bg-white;
+}
+
+/* Modal Styles */
+.modalOverlay {
+  @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4;
+}
+
+.modalContent {
+  @apply bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden;
+}
+
+.modalHeader {
+  @apply flex items-center justify-between p-6 border-b border-gray-200;
+}
+
+.modalTitle {
+  @apply text-2xl font-bold text-gray-900;
+}
+
+.closeButton {
+  @apply text-gray-400 hover:text-gray-600 text-2xl font-bold transition-colors;
+}
+
+.modalBody {
+  @apply p-6 overflow-y-auto max-h-[calc(90vh-120px)];
+}
+
+.modalDescription {
+  @apply text-gray-600 mb-6;
+}
+
+.featuredProducts {
+  @apply space-y-4;
+}
+
+.featuredProductsTitle {
+  @apply text-lg font-semibold text-gray-900 mb-4;
+}
+
+.productsGrid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4;
+}
+
+/* Dark mode styles */
+.dark .categoriesPage {
+  @apply bg-gray-900;
+}
+
+.dark .searchSection {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .filterButton {
+  @apply bg-gray-700 text-gray-200 hover:bg-gray-600;
+}
+
+.dark .sortSelect {
+  @apply bg-gray-700 border-gray-600 text-white;
+}
+
+.dark .sectionTitle {
+  @apply text-white;
+}
+
+.dark .sectionDescription {
+  @apply text-gray-300;
+}
+
+.dark .categoryCard {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .categoryName {
+  @apply text-white;
+}
+
+.dark .categoryDescription {
+  @apply text-gray-300;
+}
+
+.dark .productCount {
+  @apply text-gray-400;
+}
+
+.dark .allCategoriesSection {
+  @apply bg-gray-800;
+}
+
+.dark .modalContent {
+  @apply bg-gray-800;
+}
+
+.dark .modalHeader {
+  @apply border-gray-700;
+}
+
+.dark .modalTitle {
+  @apply text-white;
+}
+
+.dark .modalDescription {
+  @apply text-gray-300;
+}
+
+.dark .featuredProductsTitle {
+  @apply text-white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .heroTitle {
+    @apply text-3xl;
+  }
+  
+  .heroSubtitle {
+    @apply text-lg;
+  }
+  
+  .searchContainer {
+    @apply flex-col items-stretch;
+  }
+  
+  .searchBar {
+    @apply max-w-none;
+  }
+  
+  .filterControls {
+    @apply justify-center;
+  }
+  
+  .categoriesGrid {
+    @apply grid-cols-1 sm:grid-cols-2;
+  }
+  
+  .categoryImageContainer {
+    @apply h-40;
+  }
+  
+  .modalContent {
+    @apply mx-4;
+  }
+  
+  .productsGrid {
+    @apply grid-cols-1 sm:grid-cols-2;
+  }
+}
+
+@media (max-width: 768px) {
+  .categoriesGrid {
+    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+  }
+}
+
+/* Animation classes */
+.fadeIn {
+  @apply opacity-0;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slideIn {
+  @apply opacity-0;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Loading states */
+.loading {
+  @apply animate-pulse;
+}
+
+.loadingImage {
+  @apply bg-gray-200 rounded;
+}
+
+.loadingText {
+  @apply bg-gray-200 rounded h-4;
+}
+
+/* Accessibility */
+.srOnly {
+  @apply sr-only;
+}
+
+/* Focus styles */
+.categoryCard:focus-within {
+  @apply ring-2 ring-primary-500 ring-offset-2;
+}
+
+.exploreButton:focus {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2 rounded;
+}
+
+.filterButton:focus {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+}
+
+.sortSelect:focus {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+} 

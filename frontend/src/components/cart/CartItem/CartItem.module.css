@@ -1,0 +1,342 @@
+/* CartItem component styles */
+
+/* Base cart item container */
+.cartItem {
+  @apply bg-white border border-gray-200 rounded-lg;
+}
+
+/* Variant styles */
+.cartItemDefault {
+  @apply py-6;
+}
+
+.cartItemDrawer {
+  @apply flex space-x-3 p-3;
+}
+
+.cartItemPage {
+  @apply py-6;
+}
+
+/* Removing state */
+.cartItemRemoving {
+  @apply opacity-50 pointer-events-none;
+}
+
+/* Product image container */
+.imageContainer {
+  @apply flex-shrink-0;
+}
+
+.imageContainerDrawer {
+  @apply w-16 h-16 bg-gray-100 rounded-md overflow-hidden;
+}
+
+.imageContainerDefault {
+  @apply w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 rounded-lg overflow-hidden hover:opacity-75 transition-opacity;
+}
+
+/* Product image */
+.productImage {
+  @apply w-full h-full object-cover;
+}
+
+/* Product info container */
+.productInfo {
+  @apply flex-1 min-w-0;
+}
+
+/* Product title */
+.productTitle {
+  @apply text-gray-900 hover:text-primary-600 transition-colors;
+}
+
+.productTitleDrawer {
+  @apply text-sm font-medium line-clamp-2;
+}
+
+.productTitleDefault {
+  @apply text-base font-medium;
+}
+
+/* Product unit */
+.productUnit {
+  @apply text-gray-500 mt-1;
+}
+
+.productUnitDrawer {
+  @apply text-xs;
+}
+
+.productUnitDefault {
+  @apply text-sm;
+}
+
+/* Vendor info */
+.vendorInfo {
+  @apply text-sm text-gray-500 mt-1;
+}
+
+/* Stock warning */
+.stockWarning {
+  @apply text-sm text-orange-600 mt-1;
+}
+
+/* Price container */
+.priceContainer {
+  @apply flex items-center space-x-2 mt-1;
+}
+
+.priceContainerDefault {
+  @apply text-right;
+}
+
+/* Current price */
+.currentPrice {
+  @apply font-semibold text-gray-900;
+}
+
+.currentPriceDrawer {
+  @apply text-sm;
+}
+
+.currentPriceDefault {
+  @apply text-base;
+}
+
+/* Original price */
+.originalPrice {
+  @apply text-gray-500 line-through;
+}
+
+.originalPriceDrawer {
+  @apply text-xs;
+}
+
+.originalPriceDefault {
+  @apply text-sm;
+}
+
+/* Savings text */
+.savings {
+  @apply text-sm text-green-600;
+}
+
+/* Controls container */
+.controlsContainer {
+  @apply flex items-center justify-between mt-2;
+}
+
+.controlsContainerDefault {
+  @apply mt-4;
+}
+
+/* Quantity controls */
+.quantityControls {
+  @apply flex items-center space-x-2;
+}
+
+.quantityControlsDefault {
+  @apply flex items-center border border-gray-300 rounded-md;
+}
+
+/* Quantity button */
+.quantityButton {
+  @apply flex items-center justify-center text-gray-600 hover:bg-gray-50 transition-colors;
+}
+
+.quantityButtonDrawer {
+  @apply w-6 h-6 rounded-full border border-gray-300;
+}
+
+.quantityButtonDefault {
+  @apply w-8 h-8;
+}
+
+.quantityButton:disabled {
+  @apply opacity-50 cursor-not-allowed hover:bg-transparent;
+}
+
+/* Quantity display */
+.quantityDisplay {
+  @apply font-medium text-center;
+}
+
+.quantityDisplayDrawer {
+  @apply text-sm w-8;
+}
+
+.quantityDisplayDefault {
+  @apply w-12 text-sm;
+}
+
+/* Unit price */
+.unitPrice {
+  @apply text-sm text-gray-600;
+}
+
+/* Action buttons container */
+.actionButtons {
+  @apply flex items-center space-x-2;
+}
+
+/* Remove button */
+.removeButton {
+  @apply text-red-500 hover:text-red-700 p-1 transition-colors;
+}
+
+.removeButton:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Wishlist button */
+.wishlistButton {
+  @apply text-gray-600 hover:text-gray-800 transition-colors;
+}
+
+.wishlistButton:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Product details container */
+.productDetails {
+  @apply flex justify-between;
+}
+
+/* Product details left */
+.productDetailsLeft {
+  @apply pr-4;
+}
+
+/* Product details right */
+.productDetailsRight {
+  @apply text-right;
+}
+
+/* Quantity and price row */
+.quantityPriceRow {
+  @apply flex items-center space-x-3;
+}
+
+/* Animation classes */
+.cartItemEnter {
+  @apply opacity-100;
+}
+
+.cartItemExit {
+  @apply opacity-0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .productDetails {
+    @apply flex-col space-y-2;
+  }
+  
+  .productDetailsRight {
+    @apply text-left;
+  }
+  
+  .controlsContainerDefault {
+    @apply flex-col space-y-3 items-start;
+  }
+  
+  .quantityPriceRow {
+    @apply w-full justify-between;
+  }
+  
+  .actionButtons {
+    @apply w-full justify-end;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .cartItem {
+    @apply border-2 border-gray-800;
+  }
+  
+  .quantityButton:hover {
+    @apply bg-gray-200;
+  }
+  
+  .removeButton:hover {
+    @apply bg-red-100;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .cartItem {
+    @apply bg-gray-800 border-gray-700;
+  }
+  
+  .productTitle {
+    @apply text-gray-100;
+  }
+  
+  .productUnit,
+  .vendorInfo {
+    @apply text-gray-400;
+  }
+  
+  .currentPrice {
+    @apply text-gray-100;
+  }
+  
+  .originalPrice {
+    @apply text-gray-500;
+  }
+  
+  .quantityButton:hover {
+    @apply bg-gray-700;
+  }
+  
+  .removeButton:hover {
+    @apply text-red-400;
+  }
+  
+  .wishlistButton:hover {
+    @apply text-gray-300;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .cartItemEnter,
+  .cartItemExit {
+    @apply animate-none;
+  }
+  
+  .productImage {
+    @apply transition-none;
+  }
+  
+  .quantityButton,
+  .removeButton,
+  .wishlistButton {
+    @apply transition-none;
+  }
+}
+
+/* Focus styles for accessibility */
+.quantityButton:focus,
+.removeButton:focus,
+.wishlistButton:focus {
+  @apply outline-none ring-2 ring-primary-500 ring-offset-2;
+}
+
+/* Loading state */
+.cartItemLoading {
+  @apply animate-pulse;
+}
+
+/* Error state */
+.cartItemError {
+  @apply border-red-300 bg-red-50;
+}
+
+/* Success state */
+.cartItemSuccess {
+  @apply border-green-300 bg-green-50;
+}
