@@ -80,20 +80,15 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  isActive: {
+    type: Boolean,
+    default: true
+  },
   emailVerificationToken: String,
   emailVerificationExpire: Date,
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   lastLogin: Date,
-  isActive: {
-    type: Boolean,
-    default: true
-  },
-  status: {
-    type: String,
-    enum: ['pending_approval', 'approved', 'rejected', 'active', 'inactive'],
-    default: 'active'
-  }
 }, {
   timestamps: true,
   toJSON: { virtuals: true },

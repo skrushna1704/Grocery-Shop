@@ -18,9 +18,6 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Import database connection
-import connectDB from './config/database.js';
-
 // Import routes
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
@@ -28,7 +25,6 @@ import productRoutes from './routes/products.js';
 import categoryRoutes from './routes/categories.js';
 import cartRoutes from './routes/cart.js';
 import orderRoutes from './routes/orders.js';
-import adminRoutes from './routes/admin.js';
 import uploadRoutes from './routes/upload.js';
 
 // Import middleware
@@ -37,17 +33,17 @@ import errorHandler from './middleware/errorHandler.js';
 // Initialize express app
 const app = express();
 
-// Connect to MongoDB
-connectDB();
-
-// Security middleware
-app.use(helmet());
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? ['https://yourdomain.com'] 
-    : ['http://localhost:3000','http://localhost:3002','http://localhost:3001'],
+    : ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3001'],
   credentials: true
 }));
+app.use(helmet());
+app.use(compression());
 
 // Rate limiting
 const limiter = rateLimit({
@@ -57,21 +53,10 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
-
-// Data sanitization against XSS
 app.use(xss());
-
-// Prevent parameter pollution
 app.use(hpp());
-
-// Compression middleware
-app.use(compression());
 
 // Logging middleware
 if (process.env.NODE_ENV === 'development') {
@@ -100,18 +85,9 @@ app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
-app.use('/api/admin', adminRoutes);
 app.use('/api/upload', uploadRoutes);
 
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `Route ${req.originalUrl} not found`
-  });
-});
-
-// Error handling middleware
+// Error handler
 app.use(errorHandler);
 
 export default app; 

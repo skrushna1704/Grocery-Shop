@@ -33,19 +33,6 @@ export const register = async (req, res, next) => {
       return res.status(400).json(errorResponse('User already exists with this email'));
     }
 
-    // For shopkeeper registration, check if there's already an approved shopkeeper
-    if (role === 'admin') {
-      const existingShopkeeper = await User.findOne({ 
-        role: 'admin', 
-        isActive: true,
-        status: 'approved'
-      });
-      
-      if (existingShopkeeper) {
-        return res.status(400).json(errorResponse('A shopkeeper already exists for this store. Please contact support.'));
-      }
-    }
-
     // Create user with role-specific settings
     const userData = {
       name: fullName,
@@ -54,15 +41,6 @@ export const register = async (req, res, next) => {
       phone,
       role
     };
-
-    // Set status based on role
-    if (role === 'admin') {
-      userData.status = 'pending_approval';
-      userData.isActive = false; // Shopkeepers need approval
-    } else {
-      userData.status = 'active';
-      userData.isActive = true; // Customers can login immediately
-    }
 
     const user = await User.create(userData);
 
@@ -139,22 +117,6 @@ export const login = async (req, res, next) => {
 
     if (!user) {
       return res.status(401).json(errorResponse('Invalid credentials'));
-    }
-
-    // Check if user is active
-    if (!user.isActive) {
-      console.log('DEBUG: User is not active:', user.email);
-      return res.status(401).json(errorResponse('Account is deactivated'));
-    }
-
-    // Check approval status for shopkeepers
-    if (user.role === 'admin' && user.status !== 'approved') {
-      console.log('DEBUG: Admin status not approved:', user.status);
-      if (user.status === 'pending_approval') {
-        return res.status(401).json(errorResponse('Your shopkeeper account is pending approval. Please wait for admin approval.'));
-      } else if (user.status === 'rejected') {
-        return res.status(401).json(errorResponse('Your shopkeeper account has been rejected. Please contact support.'));
-      }
     }
 
     // Check password

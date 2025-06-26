@@ -209,7 +209,7 @@ const products = [
   }
 ];
 
-export const seedProducts = async () => {
+export const seedProducts = async (users = null) => {
   try {
     // Clear existing products
     await Product.deleteMany({});
@@ -221,8 +221,18 @@ export const seedProducts = async () => {
       categoryMap[cat.name] = cat._id;
     });
 
-    // Add category references to products
-    const productsWithCategories = products.map(product => {
+    // Get shopkeeper user for createdBy field
+    let shopkeeperUser = null;
+    if (users) {
+      shopkeeperUser = users.find(user => user.role === 'shopkeeper');
+    }
+    
+    if (!shopkeeperUser) {
+      console.warn('⚠️ No shopkeeper user found, products will be created without createdBy field');
+    }
+
+    // Add category references, mainImage, and createdBy to products
+    const productsWithDetails = products.map(product => {
       let categoryId;
       
       // Assign category based on product name/description
@@ -253,12 +263,16 @@ export const seedProducts = async () => {
       return {
         ...product,
         category: categoryId,
-        createdBy: null // Will be set when admin creates products
+        mainImage: {
+          url: `https://via.placeholder.com/400x400/4F46E5/FFFFFF?text=${encodeURIComponent(product.name)}`,
+          alt: product.name
+        },
+        createdBy: shopkeeperUser ? shopkeeperUser._id : undefined
       };
     });
 
     // Insert products
-    const createdProducts = await Product.insertMany(productsWithCategories);
+    const createdProducts = await Product.insertMany(productsWithDetails);
 
     console.log(`✅ ${createdProducts.length} products seeded successfully`);
     return createdProducts;

@@ -38,7 +38,7 @@ export const getCategories = async (req, res, next) => {
     // Get categories
     const categories = await Category.find(query)
       .populate('parent', 'name')
-      .populate('children', 'name')
+      .populate('subcategories', 'name')
       .sort({ name: 1 })
       .skip(pagination.skip)
       .limit(pagination.pageSize);
@@ -56,7 +56,7 @@ export const getCategory = async (req, res, next) => {
   try {
     const category = await Category.findById(req.params.id)
       .populate('parent', 'name')
-      .populate('children', 'name');
+      .populate('subcategories', 'name');
 
     if (!category) {
       return res.status(404).json(errorResponse('Category not found'));
@@ -97,7 +97,7 @@ export const createCategory = async (req, res, next) => {
 
     const populatedCategory = await Category.findById(category._id)
       .populate('parent', 'name')
-      .populate('children', 'name');
+      .populate('subcategories', 'name');
 
     res.status(201).json(successResponse('Category created successfully', { category: populatedCategory }));
   } catch (error) {
@@ -150,7 +150,7 @@ export const updateCategory = async (req, res, next) => {
       { new: true, runValidators: true }
     )
       .populate('parent', 'name')
-      .populate('children', 'name');
+      .populate('subcategories', 'name');
 
     res.json(successResponse('Category updated successfully', { category: updatedCategory }));
   } catch (error) {
@@ -233,7 +233,7 @@ export const uploadCategoryImage = async (req, res, next) => {
 
     const populatedCategory = await Category.findById(category._id)
       .populate('parent', 'name')
-      .populate('children', 'name');
+      .populate('subcategories', 'name');
 
     res.json(successResponse('Category image uploaded successfully', { category: populatedCategory }));
   } catch (error) {
@@ -248,9 +248,9 @@ export const getCategoryTree = async (req, res, next) => {
   try {
     const categories = await Category.find({ parent: null })
       .populate({
-        path: 'children',
+        path: 'subcategories',
         populate: {
-          path: 'children',
+          path: 'subcategories',
           select: 'name slug'
         }
       })

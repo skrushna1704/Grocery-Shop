@@ -3,17 +3,16 @@ import bcrypt from 'bcryptjs';
 
 const users = [
   {
-    name: 'Admin User',
-    email: 'admin@jumalekirana.com',
-    password: 'admin123',
-    phone: '9876543210',
-    role: 'admin',
+    name: 'Shopkeeper',
+    email: 'shopkeeper@jumalekirana.com',
+    password: 'Shop@123',
+    phone: '9999999999',
+    role: 'shopkeeper',
     isEmailVerified: true,
-    isActive: true,
     addresses: [
       {
         type: 'home',
-        addressLine1: '123 Admin Street',
+        addressLine1: '123 Shop Street',
         city: 'Mumbai',
         state: 'Maharashtra',
         postalCode: '400001',
@@ -29,7 +28,6 @@ const users = [
     phone: '9876543211',
     role: 'user',
     isEmailVerified: true,
-    isActive: true,
     addresses: [
       {
         type: 'home',
@@ -39,15 +37,6 @@ const users = [
         postalCode: '400002',
         country: 'India',
         isDefault: true
-      },
-      {
-        type: 'work',
-        addressLine1: '789 Office Building',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        postalCode: '400003',
-        country: 'India',
-        isDefault: false
       }
     ]
   },
@@ -58,7 +47,6 @@ const users = [
     phone: '9876543212',
     role: 'user',
     isEmailVerified: true,
-    isActive: true,
     addresses: [
       {
         type: 'home',
@@ -66,26 +54,6 @@ const users = [
         city: 'Mumbai',
         state: 'Maharashtra',
         postalCode: '400004',
-        country: 'India',
-        isDefault: true
-      }
-    ]
-  },
-  {
-    name: 'Bob Johnson',
-    email: 'bob@example.com',
-    password: 'password123',
-    phone: '9876543213',
-    role: 'user',
-    isEmailVerified: false,
-    isActive: true,
-    addresses: [
-      {
-        type: 'home',
-        addressLine1: '654 Pine Street',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        postalCode: '400005',
         country: 'India',
         isDefault: true
       }
@@ -103,7 +71,6 @@ export const seedUsers = async () => {
       users.map(async (user) => {
         const salt = await bcrypt.genSalt(12);
         const hashedPassword = await bcrypt.hash(user.password, salt);
-        
         return {
           ...user,
           password: hashedPassword

@@ -73,7 +73,8 @@ const config = {
   USER_ROLES: {
     USER: 'user',
     ADMIN: 'admin',
-    MODERATOR: 'moderator'
+    MODERATOR: 'moderator',
+    SHOPKEEPER: 'shopkeeper'
   },
   
   // Product Status

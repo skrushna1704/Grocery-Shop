@@ -38,8 +38,16 @@ export default function LoginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated && !loading) {
-      const redirectTo = router.query.redirect || '/';
-      router.replace(redirectTo);
+      // Only redirect if not already on a role-based page
+      if (typeof window !== "undefined") {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user && user.role === "shopkeeper" && router.pathname !== "/shopkeeper/dashboard") {
+          router.replace("/shopkeeper/dashboard");
+        } else if (user && user.role !== "shopkeeper" && router.pathname !== "/") {
+          const redirectTo = router.query.redirect || "/";
+          router.replace(redirectTo);
+        }
+      }
     }
   }, [isAuthenticated, loading, router]);
 
@@ -88,8 +96,14 @@ export default function LoginPage() {
       const result = await login(formData);
       
       if (result.success) {
-        const redirectTo = router.query.redirect || '/';
-        router.replace(redirectTo);
+        // Role-based routing
+        if (result.role === 'shopkeeper') {
+          router.replace('/shopkeeper/dashboard');
+        } else {
+          // For customers or any other role, redirect to home or specified redirect
+          const redirectTo = router.query.redirect || '/';
+          router.replace(redirectTo);
+        }
       }
     } catch (err) {
       console.error('Login error:', err);

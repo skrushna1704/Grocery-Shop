@@ -111,7 +111,13 @@ export const AuthProvider = ({ children }) => {
         storage.setUser(user);
 
         dispatch({ type: 'AUTH_SUCCESS', payload: user });
-        return { success: true, user };
+        
+        // Return user role for routing
+        return { 
+          success: true, 
+          user,
+          role: user.role 
+        };
       } else {
         dispatch({ type: 'AUTH_ERROR', payload: response.data.message });
         return { success: false, error: response.data.message };

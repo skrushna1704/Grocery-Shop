@@ -1,343 +1,246 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
-import { motion } from 'framer-motion';
-import { 
-  ShoppingBag, 
-  Users, 
-  Package, 
-  TrendingUp, 
-  DollarSign,
-  Calendar,
-  Clock,
-  AlertCircle,
-  CheckCircle,
-  XCircle,
-  Plus,
+import Link from 'next/link';
+import {
+  Box,
+  List,
+  ShoppingCart,
+  Users,
+  BarChart2,
   Settings,
-  BarChart3,
-  FileText,
-  Truck
+  LogOut,
+  Plus
 } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
-import Button from '@/components/ui/Button';
-import Card from '@/components/ui/Card';
-import Badge from '@/components/ui/Badge';
-import ShopkeeperLayout from '@/components/common/ShopkeeperLayout';
 
-// Mock data for shopkeeper dashboard
-const mockStats = {
-  totalSales: 125000,
-  totalOrders: 156,
-  totalProducts: 89,
-  totalCustomers: 234,
-  pendingOrders: 12,
-  lowStockItems: 8,
-  todaySales: 8500,
-  monthlyGrowth: 15.5
-};
-
-const mockRecentOrders = [
-  {
-    id: 'ORD-2024-001',
-    customer: 'Rahul Sharma',
-    amount: 1250,
-    status: 'pending',
-    items: 5,
-    date: '2024-01-20 14:30'
-  },
-  {
-    id: 'ORD-2024-002',
-    customer: 'Priya Patel',
-    amount: 890,
-    status: 'confirmed',
-    items: 3,
-    date: '2024-01-20 13:15'
-  },
-  {
-    id: 'ORD-2024-003',
-    customer: 'Amit Kumar',
-    amount: 2100,
-    status: 'processing',
-    items: 8,
-    date: '2024-01-20 12:45'
-  }
-];
-
-const mockLowStockItems = [
-  { name: 'Fresh Tomatoes', currentStock: 5, minStock: 10 },
-  { name: 'Organic Bananas', currentStock: 3, minStock: 8 },
-  { name: 'Basmati Rice', currentStock: 2, minStock: 5 },
-  { name: 'Fresh Milk', currentStock: 4, minStock: 12 }
-];
-
-export default function ShopkeeperDashboard() {
+const ShopkeeperDashboard = () => {
+  const { user, logout } = useAuth();
   const router = useRouter();
-  const { user, isAuthenticated, loading } = useAuth();
-  const [activeTab, setActiveTab] = useState('overview');
+  const [stats, setStats] = useState({
+    totalProducts: 0,
+    totalOrders: 0,
+    totalCustomers: 0,
+    totalRevenue: 0
+  });
 
-  // Redirect if not authenticated or not admin
   useEffect(() => {
-    if (!loading && (!isAuthenticated || user?.role !== 'admin')) {
-      router.replace('/login?redirect=/shopkeeper/dashboard');
+    if (!user || user.role !== 'shopkeeper') {
+      router.push('/login');
+      return;
     }
-  }, [isAuthenticated, loading, user, router]);
+    // TODO: Fetch dashboard stats from API
+    fetchDashboardStats();
+  }, [user, router]);
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'pending': return 'warning';
-      case 'confirmed': return 'info';
-      case 'processing': return 'primary';
-      case 'delivered': return 'success';
-      case 'cancelled': return 'error';
-      default: return 'secondary';
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'pending': return <Clock className="w-4 h-4" />;
-      case 'confirmed': return <CheckCircle className="w-4 h-4" />;
-      case 'processing': return <Package className="w-4 h-4" />;
-      case 'delivered': return <Truck className="w-4 h-4" />;
-      case 'cancelled': return <XCircle className="w-4 h-4" />;
-      default: return <AlertCircle className="w-4 h-4" />;
+  const fetchDashboardStats = async () => {
+    try {
+      // TODO: Replace with actual API calls
+      setStats({
+        totalProducts: 25,
+        totalOrders: 150,
+        totalCustomers: 89,
+        totalRevenue: 45000
+      });
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="flex flex-col items-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-green-200 border-t-green-600 mb-4"></div>
-          <p className="text-gray-600">Loading Shopkeeper Dashboard...</p>
-        </div>
-      </div>
-    );
-  }
 
-  if (!isAuthenticated || user?.role !== 'admin') {
+
+  if (!user || user.role !== 'shopkeeper') {
     return null;
   }
 
   return (
-    <ShopkeeperLayout title="Dashboard">
-      <Head>
-        <title>Shopkeeper Dashboard - Jumale Grocery Shop</title>
-        <meta name="description" content="Manage your grocery shop operations, orders, and inventory." />
-      </Head>
+    <div className="min-h-screen bg-gray-50">
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-        >
-          <Card className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-100 text-sm font-medium">Total Sales</p>
-                <p className="text-2xl font-bold">₹{mockStats.totalSales.toLocaleString()}</p>
-                <p className="text-blue-100 text-sm">+{mockStats.monthlyGrowth}% this month</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center">
+              <div className="p-3 rounded-full bg-blue-100 text-blue-600">
+                <Box className="h-6 w-6" />
               </div>
-              <DollarSign className="w-8 h-8 text-blue-200" />
-            </div>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <Card className="bg-gradient-to-r from-green-500 to-green-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-green-100 text-sm font-medium">Total Orders</p>
-                <p className="text-2xl font-bold">{mockStats.totalOrders}</p>
-                <p className="text-green-100 text-sm">{mockStats.pendingOrders} pending</p>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Total Products</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.totalProducts}</p>
               </div>
-              <ShoppingBag className="w-8 h-8 text-green-200" />
-            </div>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <Card className="bg-gradient-to-r from-purple-500 to-purple-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-purple-100 text-sm font-medium">Products</p>
-                <p className="text-2xl font-bold">{mockStats.totalProducts}</p>
-                <p className="text-purple-100 text-sm">{mockStats.lowStockItems} low stock</p>
-              </div>
-              <Package className="w-8 h-8 text-purple-200" />
-            </div>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <Card className="bg-gradient-to-r from-orange-500 to-orange-600 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-orange-100 text-sm font-medium">Customers</p>
-                <p className="text-2xl font-bold">{mockStats.totalCustomers}</p>
-                <p className="text-orange-100 text-sm">Active customers</p>
-              </div>
-              <Users className="w-8 h-8 text-orange-200" />
-            </div>
-          </Card>
-        </motion.div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <Card>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
-            <div className="space-y-3">
-              <Button 
-                variant="outline" 
-                className="w-full justify-start"
-                onClick={() => router.push('/shopkeeper/products')}
-              >
-                <Package className="w-4 h-4 mr-2" />
-                Manage Products
-              </Button>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start"
-                onClick={() => router.push('/shopkeeper/orders')}
-              >
-                <ShoppingBag className="w-4 h-4 mr-2" />
-                View Orders
-              </Button>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start"
-                onClick={() => router.push('/shopkeeper/customers')}
-              >
-                <Users className="w-4 h-4 mr-2" />
-                Customer List
-              </Button>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start"
-                onClick={() => router.push('/shopkeeper/analytics')}
-              >
-                <BarChart3 className="w-4 h-4 mr-2" />
-                View Analytics
-              </Button>
-            </div>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-        >
-          <Card>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Orders</h3>
-            <div className="space-y-3">
-              {mockRecentOrders.map((order) => (
-                <div key={order.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div>
-                    <p className="font-medium text-gray-900">{order.customer}</p>
-                    <p className="text-sm text-gray-600">{order.id} • {order.items} items</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-medium text-gray-900">₹{order.amount}</p>
-                    <Badge variant={getStatusColor(order.status)} className="text-xs">
-                      {getStatusIcon(order.status)}
-                      {order.status}
-                    </Badge>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <Button 
-              variant="link" 
-              className="w-full mt-3"
-              onClick={() => router.push('/shopkeeper/orders')}
-            >
-              View All Orders
-            </Button>
-          </Card>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.7 }}
-        >
-          <Card>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Low Stock Alert</h3>
-            <div className="space-y-3">
-              {mockLowStockItems.map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-200">
-                  <div>
-                    <p className="font-medium text-gray-900">{item.name}</p>
-                    <p className="text-sm text-red-600">
-                      {item.currentStock} left (min: {item.minStock})
-                    </p>
-                  </div>
-                  <Button size="sm" variant="outline" className="text-red-600 border-red-300">
-                    Restock
-                  </Button>
-                </div>
-              ))}
-            </div>
-            <Button 
-              variant="link" 
-              className="w-full mt-3"
-              onClick={() => router.push('/shopkeeper/inventory')}
-            >
-              View Inventory
-            </Button>
-          </Card>
-        </motion.div>
-      </div>
-
-      {/* Today&apos;s Summary */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-      >
-        <Card>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Today&apos;s Summary</h3>
-            <Calendar className="w-5 h-5 text-gray-400" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <p className="text-2xl font-bold text-green-600">₹{mockStats.todaySales.toLocaleString()}</p>
-              <p className="text-gray-600">Today&apos;s Sales</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-blue-600">8</p>
-              <p className="text-gray-600">Orders Today</p>
-            </div>
-            <div className="text-center">
-              <p className="text-2xl font-bold text-purple-600">12</p>
-              <p className="text-gray-600">New Customers</p>
             </div>
           </div>
-        </Card>
-      </motion.div>
-    </ShopkeeperLayout>
+
+          <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center">
+              <div className="p-3 rounded-full bg-green-100 text-green-600">
+                <ShoppingCart className="h-6 w-6" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Total Orders</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.totalOrders}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center">
+              <div className="p-3 rounded-full bg-purple-100 text-purple-600">
+                <Users className="h-6 w-6" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Total Customers</p>
+                <p className="text-2xl font-semibold text-gray-900">{stats.totalCustomers}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center">
+              <div className="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                <BarChart2 className="h-6 w-6" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm font-medium text-gray-600">Total Revenue</p>
+                <p className="text-2xl font-semibold text-gray-900">₹{stats.totalRevenue.toLocaleString()}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="bg-white rounded-lg shadow mb-8">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-medium text-gray-900">Quick Actions</h2>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Link href="/shopkeeper/products/add" legacyBehavior>
+                <a className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-blue-300 transition-colors">
+                  <Plus className="h-5 w-5 text-blue-600 mr-3" />
+                  <span className="font-medium">Add Product</span>
+                </a>
+              </Link>
+              
+              <Link href="/shopkeeper/categories/add" legacyBehavior>
+                <a className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-green-300 transition-colors">
+                  <Plus className="h-5 w-5 text-green-600 mr-3" />
+                  <span className="font-medium">Add Category</span>
+                </a>
+              </Link>
+              
+              <Link href="/shopkeeper/orders" legacyBehavior>
+                <a className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-purple-300 transition-colors">
+                  <ShoppingCart className="h-5 w-5 text-purple-600 mr-3" />
+                  <span className="font-medium">View Orders</span>
+                </a>
+              </Link>
+              
+              <Link href="/shopkeeper/customers" legacyBehavior>
+                <a className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-yellow-300 transition-colors">
+                  <Users className="h-5 w-5 text-yellow-600 mr-3" />
+                  <span className="font-medium">View Customers</span>
+                </a>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Navigation Menu */}
+        <div className="bg-white rounded-lg shadow">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-lg font-medium text-gray-900">Management</h2>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Link href="/shopkeeper/products" legacyBehavior>
+                <a className="group">
+                  <div className="p-6 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-medium text-gray-900 group-hover:text-blue-600">Products</h3>
+                        <p className="text-sm text-gray-600 mt-1">Manage your product catalog</p>
+                      </div>
+                      <Box className="h-8 w-8 text-gray-400 group-hover:text-blue-600" />
+                    </div>
+                  </div>
+                </a>
+              </Link>
+
+              <Link href="/shopkeeper/categories" legacyBehavior>
+                <a className="group">
+                  <div className="p-6 border border-gray-200 rounded-lg hover:border-green-300 hover:bg-green-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-medium text-gray-900 group-hover:text-green-600">Categories</h3>
+                        <p className="text-sm text-gray-600 mt-1">Organize your products</p>
+                      </div>
+                      <List className="h-8 w-8 text-gray-400 group-hover:text-green-600" />
+                    </div>
+                  </div>
+                </a>
+              </Link>
+
+              <Link href="/shopkeeper/orders" legacyBehavior>
+                <a className="group">
+                  <div className="p-6 border border-gray-200 rounded-lg hover:border-purple-300 hover:bg-purple-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-medium text-gray-900 group-hover:text-purple-600">Orders</h3>
+                        <p className="text-sm text-gray-600 mt-1">Track and manage orders</p>
+                      </div>
+                      <ShoppingCart className="h-8 w-8 text-gray-400 group-hover:text-purple-600" />
+                    </div>
+                  </div>
+                </a>
+              </Link>
+
+              <Link href="/shopkeeper/customers" legacyBehavior>
+                <a className="group">
+                  <div className="p-6 border border-gray-200 rounded-lg hover:border-yellow-300 hover:bg-yellow-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-medium text-gray-900 group-hover:text-yellow-600">Customers</h3>
+                        <p className="text-sm text-gray-600 mt-1">View customer information</p>
+                      </div>
+                      <Users className="h-8 w-8 text-gray-400 group-hover:text-yellow-600" />
+                    </div>
+                  </div>
+                </a>
+              </Link>
+
+              <Link href="/shopkeeper/analytics" legacyBehavior>
+                <a className="group">
+                  <div className="p-6 border border-gray-200 rounded-lg hover:border-indigo-300 hover:bg-indigo-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-medium text-gray-900 group-hover:text-indigo-600">Analytics</h3>
+                        <p className="text-sm text-gray-600 mt-1">View sales and performance</p>
+                      </div>
+                      <BarChart2 className="h-8 w-8 text-gray-400 group-hover:text-indigo-600" />
+                    </div>
+                  </div>
+                </a>
+              </Link>
+
+              <Link href="/shopkeeper/settings" legacyBehavior>
+                <a className="group">
+                  <div className="p-6 border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-medium text-gray-900 group-hover:text-gray-600">Settings</h3>
+                        <p className="text-sm text-gray-600 mt-1">Manage your account</p>
+                      </div>
+                      <Settings className="h-8 w-8 text-gray-400 group-hover:text-gray-600" />
+                    </div>
+                  </div>
+                </a>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
-} 
+};
+
+export default ShopkeeperDashboard;

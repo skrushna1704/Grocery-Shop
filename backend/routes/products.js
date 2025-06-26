@@ -34,7 +34,7 @@ router.get('/:id', validateId, getProduct);
 router.post('/:id/reviews', protect, addProductReview);
 
 // Admin routes
-router.post('/', protect, authorize('admin'), validateProduct, createProduct);
+router.post('/', protect, authorize('admin','shopkeeper'), validateProduct, createProduct);
 router.put('/:id', protect, authorize('admin'), validateId, updateProduct);
 router.delete('/:id', protect, authorize('admin'), validateId, deleteProduct);
 router.post('/:id/images', protect, authorize('admin'), uploadProductImages);

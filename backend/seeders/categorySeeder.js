@@ -73,13 +73,30 @@ const categories = [
   }
 ];
 
-export const seedCategories = async () => {
+export const seedCategories = async (users = null) => {
   try {
     // Clear existing categories
     await Category.deleteMany({});
 
+    // Get shopkeeper user for createdBy field
+    let shopkeeperUser = null;
+    if (users) {
+      shopkeeperUser = users.find(user => user.role === 'shopkeeper');
+    }
+    
+    // If no shopkeeper found, create a default one or skip createdBy
+    if (!shopkeeperUser) {
+      console.warn('⚠️ No shopkeeper user found, categories will be created without createdBy field');
+    }
+
+    // Add createdBy field to categories if shopkeeper exists
+    const categoriesWithCreatedBy = categories.map(category => ({
+      ...category,
+      createdBy: shopkeeperUser ? shopkeeperUser._id : undefined
+    }));
+
     // Insert categories
-    const createdCategories = await Category.insertMany(categories);
+    const createdCategories = await Category.insertMany(categoriesWithCreatedBy);
 
     console.log(`✅ ${createdCategories.length} categories seeded successfully`);
     return createdCategories;
